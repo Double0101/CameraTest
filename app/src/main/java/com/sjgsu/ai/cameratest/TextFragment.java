@@ -24,7 +24,9 @@ public class TextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.text_layout, container, false);
         mTextView = (TextView) view.findViewById(R.id.text_view);
+        mTextView.setText(getString());
         return view;
     }
 
+    public native String getString();
 }
