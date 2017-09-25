@@ -7,6 +7,6 @@ import android.os.Bundle;
 public class MainActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        return new TextFragment();
+        return new CameraFragment();
     }
 }

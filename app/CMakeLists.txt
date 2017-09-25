@@ -1,10 +1,11 @@
-set ( Project_DIR /Users/Double/Documents/workspace/Android/CameraTest )
-set ( OpenCV_PATH /Users/Double/Documents/my\ library/OpenCV-android-sdk )
-
 cmake_minimum_required(VERSION 3.4.1)
 
-set ( CMAKE_VERBOSE_MAKEFILE on )
-set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11" )
+set ( Project_DIR /Users/Double/Documents/workspace/Android/CameraTest )
+set ( OpenCV_PATH /Users/Double/Documents/libs/OpenCV-android-sdk )
+
+
+# set ( CMAKE_VERBOSE_MAKEFILE on )
+# set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11" )
 
 include_directories ( ${OpenCV_PATH}/sdk/native/jni/include )
 

@@ -3,7 +3,7 @@
 //
 #include <jni.h>
 #include <string>
-#include <opencv2/core.hhp>
+#include <opencv2/core.hpp>
 
 extern "C" {
 jstring
@@ -17,7 +17,7 @@ Java_com_sjgsu_ai_cameratest_TextFragment_testOpenCV(JNIEnv *env, jobject thiz, 
     cv::Rect();
     cv::Mat();
     std::string hello2 = "Opencv test success";
-    return env->NewStringUTF(hello2.c_str())
+    return env->NewStringUTF(hello2.c_str());
 }
 
 }
