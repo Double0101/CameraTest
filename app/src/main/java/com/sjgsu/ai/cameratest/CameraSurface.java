@@ -14,6 +14,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
+    private Camera.Parameters mParameters;
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,6 +32,11 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         mCamera.stopPreview();
+        if (mCamera != null) {
+            mParameters = mCamera.getParameters();
+            mCamera.setDisplayOrientation(90);
+            mCamera.setParameters(mParameters);
+        }
         cameraPreview();
     }
 
@@ -47,12 +53,24 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
         try {
             mCamera = Camera.open();
+            setCameraCallback();
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
         return true;
+    }
+    private void setCameraCallback() {
+        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+            @Override
+            public void onPreviewFrame(byte[] bytes, Camera camera) {
+                bytes = testDetect(bytes,
+                        camera.getParameters().getPreviewSize().width,
+                        camera.getParameters().getPreviewSize().height);
+            }
+        });
     }
 
     private void cameraPreview() {
@@ -70,4 +88,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera = null;
         }
     }
+
+    public native byte[] testDetect(byte[] bytes, int width, int height);
 }
