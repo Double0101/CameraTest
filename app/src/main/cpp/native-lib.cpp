@@ -3,7 +3,9 @@
 //
 #include <jni.h>
 #include <string>
-#include <opencv2/core.hpp>
+#include <vector>
+#include <opencv2/opencv.hpp>
+#include "npddetect.h"
 
 extern "C" {
 jstring
@@ -20,43 +22,71 @@ Java_com_sjgsu_ai_cameratest_TextFragment_testOpenCV(JNIEnv *env, jobject thiz, 
     return env->NewStringUTF(hello2.c_str());
 }
 
-jbyteArray
-Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *envm, jobject thiz, jbyteArray yuv, jint width, jint height) {
-    int total = 3 * width * height;
-    char[] rgb = new char[total];
-    char Y, Cb = 0, Cr = 0;
-    int index = 0;
-    char R, G, B;
+bool isEmbeded(Rect &x, Rect &y)
+{
+	int sx = x.area();
+	int sy = y.area();
+	return (double)(x & y).area() / (sx > sy ? sy : sx)  > 0.5;
+}
 
-    for (int y = 0; y < height; ++y) {
-    	for (int x = 0; x < width; ++x) {
-    		Y = yuv[y * width + x];
-    		if (Y < 0) Y += 255;
+void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Scores, vector<Rect>  &groups)
+{
+    for (int i = 0; i != Xs.size(); i++)
+	    groups.push_back(Rect(Xs[i], Ys[i], Ss[i], Ss[i]));
 
-    		if ((x & 1) == 0) {
-    			Cr = yuv[(y >> 1) * (width) + x + total];
-    			Cb = yuv[(y >> 1) * (width) + x + total + 1];
+    vector<int> flag(groups.size(), true);
+    for (int i = 0; i != groups.size(); i++)
+	    for (int j = i + 1; j != groups.size(); j++)
+		    if (isEmbeded(groups.at(i), groups.at(j)))
+			    flag.at(Scores[i] > Scores[j] ? j : i) = false;
+    int k = 0;
+    for (int i = 0; i != groups.size(); i++)
+	    if (flag[i]) groups[k++] = groups[i];
+    groups.resize(k);
+    return ;
+}
 
-    			if (Cb < 0) Cb += 127; else Cb -= 128;
-    			if (Cr < 0) Cr += 127; else Cr -= 128;
-    		}
+jintArray
+Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *envm, jobject thiz, jbyteArray yuv, jint width, jint height, jstring modelpath) {
+    int bufLen = width * height * 3 / 2;
+    unsigned char* pYuvBuf = new unsigned char[bufLen];
 
-    		R = Y + Cr + (Cr >> 2) + (Cr >> 3) + (Cr >> 5);
-    		G = Y - (Cb >> 2) + (Cb >> 4) + (Cb >> 5) - (Cr >> 1) + (Cr >> 3) + (Cr >> 4) + (Cr >> 5);
-    		B = Y + Cb + (Cb >> 1) + (Cb >> 2) + (Cb >> 6);
+    cv::Mat yuvImg;
+    yuvImg.create(height * 3 / 2, width, CV_8UC1);
+    cv::memcpy(yuvImg.data, pYuvBuf, bufLen * sizeof(unsigned char));
+    cv::Mat img;
+    cv::cvtColor(yuvImg, rgbImg, COLOR_YUV420sp2BGR);
 
-    		if (R < 0) R = 0; else if (R > 255) R = 255;
-            if (G < 0) G = 0; else if (G > 255) G = 255;
-           	if (B < 0) B = 0; else if (B > 255) B = 255;
+    npd::npddetect npd;
+    npd.load(modelpath);
+    //visit the whole classifier
 
-            rgb[index++] = B;
-            rgb[index++] = G;
-            rgb[index++] = R;
-        }
+    int nt = 1;
+    int nc = nt;
+    int n;
+    double t = (double)cvGetTickCount();
+    while(nc-- > 0)
+        n = npd.detect(img.data, img.cols, img.rows);
+    t = ((double)cvGetTickCount() - t) / ((double)cvGetTickFrequency()*1000.) ;
+
+    printf("Detect num: %d (%lf ms avg of %d test)\n", n, t/nt, nt);
+    vector< int >& Xs = npd.getXs();
+    vector< int >& Ys = npd.getYs();
+    vector< int >& Ss = npd.getSs();
+    vector< float >& Scores = npd.getScores();
+    char buf[10];
+    vector<Rect> groups;
+    merge(Xs, Ys, Ss, Scores, groups);
+
+    jintArray result = env->NewIntArray(4 * Xs.size());
+    for (int i = 0; i < Xs.size(); ++i)
+    {
+        result[4 * i] = Xs[i];
+        result[4 * i + 1] = Ys[i];
+        result[4 * i + 2] = Xs[i] + Ss[i];
+        result[4 * i + 3] = Ys[i] + Ss[i];
     }
-
-    cv::Mat mat(width, height, )
-
+    return result;
 }
 
 }

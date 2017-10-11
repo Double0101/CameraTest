@@ -22,6 +22,11 @@ set_target_properties ( lib_opencv
 find_library( log-lib
               log )
 
+add_library ( npddetect src/main/cpp/npddetect.cpp )
+add_library ( npdmodel src/main/cpp/npdmodel.cpp )
+
 target_link_libraries( native-lib
+                       npddetect
+                       npdmodel
                        ${log-lib}
                        lib_opencv )
