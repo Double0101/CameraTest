@@ -7,6 +7,9 @@
 #include <opencv2/opencv.hpp>
 #include "npddetect.h"
 
+using namespace cv;
+using namespace std;
+
 extern "C" {
 jstring
 Java_com_sjgsu_ai_cameratest_TextFragment_getString(JNIEnv *env, jobject thiz)
@@ -47,18 +50,19 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
 }
 
 jintArray
-Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *envm, jobject thiz, jbyteArray yuv, jint width, jint height, jstring modelpath) {
+Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *env, jobject thiz, jbyteArray yuv, jint width, jint height, jstring modelpath) {
     int bufLen = width * height * 3 / 2;
     unsigned char* pYuvBuf = new unsigned char[bufLen];
 
     cv::Mat yuvImg;
     yuvImg.create(height * 3 / 2, width, CV_8UC1);
-    cv::memcpy(yuvImg.data, pYuvBuf, bufLen * sizeof(unsigned char));
+    memcpy(yuvImg.data, pYuvBuf, bufLen * sizeof(unsigned char));
     cv::Mat img;
-    cv::cvtColor(yuvImg, rgbImg, COLOR_YUV420sp2BGR);
+    cv::cvtColor(yuvImg, img, COLOR_YUV420sp2BGR);
 
     npd::npddetect npd;
-    npd.load(modelpath);
+    const char* path = env->GetStringUTFChars(modelpath, 0);
+    npd.load(path);
     //visit the whole classifier
 
     int nt = 1;
@@ -79,13 +83,15 @@ Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *envm, jobject thiz, jbyteArra
     merge(Xs, Ys, Ss, Scores, groups);
 
     jintArray result = env->NewIntArray(4 * Xs.size());
+    jint *h = new jint[4 * Xs.size()];
     for (int i = 0; i < Xs.size(); ++i)
     {
-        result[4 * i] = Xs[i];
-        result[4 * i + 1] = Ys[i];
-        result[4 * i + 2] = Xs[i] + Ss[i];
-        result[4 * i + 3] = Ys[i] + Ss[i];
+        h[4 * i] = Xs[i];
+        h[4 * i + 1] = Ys[i];
+        h[4 * i + 2] = Xs[i] + Ss[i];
+        h[4 * i + 3] = Ys[i] + Ss[i];
     }
+    env->SetIntArrayRegion(result, 0, 4 * Xs.size(), h);
     return result;
 }
 
