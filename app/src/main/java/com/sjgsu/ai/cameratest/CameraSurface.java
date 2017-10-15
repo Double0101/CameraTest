@@ -3,9 +3,11 @@ package com.sjgsu.ai.cameratest;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.graphics.Paint;
 import android.hardware.Camera;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -21,13 +23,13 @@ import java.util.Vector;
  * Created by Double on 25/09/2017.
  */
 
-public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private Camera.Parameters mParameters;
     private int[] faces;
-    private String mResultString;
+    private String modelPath;
     private Paint mPaint;
 
     static {
@@ -39,7 +41,8 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         super(context, attrs);
         setWillNotDraw(false);
         setZOrderOnTop(true);
-        mResultString = ModelLab.getModelPath(context);
+        RawResource mRawResource = new RawResource(context, R.raw.newmodel);
+        modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
         mPaint = new Paint();
         mPaint.setColor(Color.GREEN);
         mPaint.setStrokeWidth(7f);
@@ -78,25 +81,29 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
         try {
             mCamera = Camera.open();
-            setCameraCallback();
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            parameters.setPreviewFormat(ImageFormat.YV12);
+            mCamera.setParameters(parameters);
+
+            mCamera.setPreviewCallback(this);
 
         } catch (Exception e) {
             e.printStackTrace();
+            cameraRelease();
             return false;
         }
 
         return true;
     }
-    private void setCameraCallback() {
-        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
-            @Override
-            public void onPreviewFrame(byte[] bytes, Camera camera) {
-                faces = testDetect(bytes,
-                        camera.getParameters().getPreviewSize().width,
-                        camera.getParameters().getPreviewSize().height,
-                        mResultString);
-            }
-        });
+
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        Log.i("fdsdfs", "onPreviewFrame");
+        faces = testDetect(bytes,
+                camera.getParameters().getPreviewSize().width,
+                camera.getParameters().getPreviewSize().height,
+                modelPath);
     }
 
     private void cameraPreview() {
@@ -104,6 +111,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
         } catch (Exception e) {
+            cameraRelease();
             e.printStackTrace();
         }
     }
