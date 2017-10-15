@@ -51,7 +51,7 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
 }
 
 jintArray
-Java_com_sjgsu_ai_cameratest_CameraSurface(JNIEnv *env, jobject thiz, jbyteArray yuv, jint width, jint height, jstring modelpath) {
+Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jbyteArray yuv, jint width, jint height, jstring modelpath) {
     int bufLen = (int) ceil(width / 16) * 16;
         bufLen *= height;
 

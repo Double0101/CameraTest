@@ -66,6 +66,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setParameters(mParameters);
         }
         cameraPreview();
+        mCamera.setPreviewCallback(this);
     }
 
     @Override
@@ -85,8 +86,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             parameters.setPreviewFormat(ImageFormat.YV12);
             mCamera.setParameters(parameters);
-
-            mCamera.setPreviewCallback(this);
 
         } catch (Exception e) {
             e.printStackTrace();
