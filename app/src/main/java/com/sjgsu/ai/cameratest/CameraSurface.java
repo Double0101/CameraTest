@@ -42,6 +42,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         initCamera2();
