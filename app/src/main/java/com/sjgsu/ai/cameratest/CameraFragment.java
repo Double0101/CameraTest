@@ -25,6 +25,7 @@ public class CameraFragment extends Fragment {
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
         mCameraSurface.setParentFragment(this);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
+
         return view;
     }
 

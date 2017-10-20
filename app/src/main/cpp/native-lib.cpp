@@ -56,14 +56,8 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
 jintArray
 Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jbyteArray data, jint width, jint height, jstring modelpath) {
     int bufLen = (int) ceil(width / 16) * 16;
-    bufLen *= height;
 
-    unsigned char* yuv = new unsigned char[bufLen];
-    env->GetByteArrayRegion(data, 0, bufLen, reinterpret_cast<jbyte*>(yuv));
-
-    cv::Mat img;
-    img.create(height, width, CV_8UC1);
-    memcpy(img.data, yuv, bufLen * sizeof(unsigned char));
+    cv::Mat img(height, width, CV_8UC1, data, bufLen);
 
     npd::npddetect npd;
     const char* path = env->GetStringUTFChars(modelpath, 0);
