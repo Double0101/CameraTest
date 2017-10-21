@@ -54,15 +54,18 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
 }
 
 jintArray
-Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jbyteArray data, jint width, jint height, jstring modelpath) {
-    int bufLen = (int) ceil(width / 16) * 16;
+Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jstring data, jint width, jint height, jstring modelpath) {
+//    int bufWid = (int) ceil(width / 16) * 16;
 
-    cv::Mat img(height, width, CV_8UC1, data, bufLen);
+//    cv::Mat img(height, width, CV_8UC1, data, bufWid);
+    const char* imgpath = env->GetStringUTFChars(data, 0);
+    cv::Mat img = cv::imread(imgpath, 0);
 
     npd::npddetect npd;
     const char* path = env->GetStringUTFChars(modelpath, 0);
     npd.load(path);
     //visit the whole classifier
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%s\n", path);
 
     int nt = 1;
     int nc = nt;
@@ -89,8 +92,10 @@ Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz,
         h[4 * i + 1] = Ys[i];
         h[4 * i + 2] = Xs[i] + Ss[i];
         h[4 * i + 3] = Ys[i] + Ss[i];
+        __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d %d %d %d\n", h[4 * i], h[4 * i + 1], h[4 * i + 2], h[4 * i + 3]);
     }
     env->SetIntArrayRegion(result, 0, 4 * Xs.size(), h);
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 3);
     return result;
 }
 
