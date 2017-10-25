@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.ImageFormat;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.Image;
@@ -17,6 +20,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
 
 /**
  * Created by Double on 25/09/2017.
@@ -30,8 +35,9 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     private Camera.Parameters mParameters;
     private String modelPath;
 
-    private String imgPath;
+//    private String imgPath;
     private int width, height;
+    private byte[] testByte;
 
     static {
         System.loadLibrary("native-lib");
@@ -44,13 +50,23 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
 
         // test
-        RawResource rawResource = new RawResource(context, R.raw.img_test_jni);
-        imgPath = rawResource.save("img_test.jpg", false).getAbsolutePath();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
-        width = options.outWidth;
-        height = options.outHeight;
+//        RawResource rawResource = new RawResource(context, R.raw.img_test_jni);
+//        imgPath = rawResource.save("img_test.jpg", false).getAbsolutePath();
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
+//        width = options.outWidth;
+//        height = options.outHeight;
+
+        Drawable drawable = getResources().getDrawable(R.drawable.img_test_jni);
+        Bitmap bitmap = convertGrayImg(((BitmapDrawable) drawable).getBitmap());
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+        Log.i("JNIMSG", width + " " + height);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        testByte = out.toByteArray();
+        Log.i("JNIMSG", "byte[] length " + testByte.length);
 
         mHolder = getHolder();
         mHolder.addCallback(this);
@@ -110,7 +126,8 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     public void onPreviewFrame(byte[] bytes, Camera camera) {
 
         // test
-        testDetect(imgPath,
+
+        testDetect(testByte,
                 width,
                 height,
                 modelPath);
@@ -122,34 +139,19 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private Bitmap convertGrayImg(Bitmap bitmap) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int[] pixels = new int[width * height];
+        int width, height;
+        height = bitmap.getHeight();
+        width = bitmap.getWidth();
 
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        int alpha = 0xFF << 24;
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                int grey = pixels[width * i + j];
-
-                int red = ((grey  & 0x00FF0000 ) >> 16);
-                int green = ((grey & 0x0000FF00) >> 8);
-                int blue = (grey & 0x000000FF);
-
-                grey = (int)((float) red * 0.3 + (float)green * 0.59 + (float)blue * 0.11);
-                grey = alpha | (grey << 16) | (grey << 8) | grey;
-                pixels[width * i + j] = grey;
-            }
-        }
-        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        result.setPixels(pixels, 0, width, 0, 0, width, height);
-        return result;
-    }
-
-    private byte[] bitmap2Bytes(Bitmap bitmap) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-        return out.toByteArray();
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bitmap, 0, 0, paint);
+        return bmpGrayscale;
     }
 
     private void cameraPreview() {
@@ -169,6 +171,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public native int[] testDetect(String img, int width, int height, String model);
-//    public native int[] testDetect(byte[] bytes, int width, int height, String result);
+//    public native int[] testDetect(String img, int width, int height, String model);
+    public native int[] testDetect(byte[] bytes, int width, int height, String result);
 }

@@ -54,12 +54,14 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
 }
 
 jintArray
-Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jstring data, jint width, jint height, jstring modelpath) {
-//    int bufWid = (int) ceil(width / 16) * 16;
+Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jbyteArray data, jint width, jint height, jstring modelpath) {
+    int bufWid = (int) ceil(width / 16) * 16;
+    jbyte *yuv = env->GetByteArrayElements(data, 0);
+    cv::Mat img(height, width, CV_8UC1, (unsigned char *) yuv, bufWid);
 
-//    cv::Mat img(height, width, CV_8UC1, data, bufWid);
-    const char* imgpath = env->GetStringUTFChars(data, 0);
-    cv::Mat img = cv::imread(imgpath, 0);
+//    cv::imwrite("/storage/emulated/legacy/com.double.test/img_test.jpg", img);
+//    const char* imgpath = env->GetStringUTFChars(data, 0);
+//    cv::Mat img = cv::imread(imgpath, 0);
 
     npd::npddetect npd;
     const char* path = env->GetStringUTFChars(modelpath, 0);
@@ -71,9 +73,12 @@ Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz,
     int nc = nt;
     int n;
     double t = (double)cvGetTickCount();
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 0);
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "cols %d rows %d\n", img.cols, img.rows);
     while(nc-- > 0)
         n = npd.detect(img.data, img.cols, img.rows);
     t = ((double)cvGetTickCount() - t) / ((double)cvGetTickFrequency()*1000.) ;
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 1);
 
     vector< int >& Xs = npd.getXs();
     vector< int >& Ys = npd.getYs();
