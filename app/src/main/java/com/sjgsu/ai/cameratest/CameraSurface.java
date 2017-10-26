@@ -19,6 +19,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
@@ -36,6 +41,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     private String modelPath;
 
 //    private String imgPath;
+    private int testFlag = 0;
     private int width, height;
     private byte[] testByte;
 
@@ -110,7 +116,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera = Camera.open();
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-            parameters.setPreviewFormat(ImageFormat.YV12);
+            parameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(parameters);
 
         } catch (Exception e) {
@@ -126,11 +132,25 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     public void onPreviewFrame(byte[] bytes, Camera camera) {
 
         // test
+        if (bytes == null) return;
+        Log.i("JNIMSG", "byte length " + bytes.length);
+        Log.i("JNIMSG", "PreviewSize width & height " + mParameters.getPreviewSize().width + " " + mParameters.getPreviewSize().height);
+        Log.i("JNIMSG", "Camera size " + camera.getParameters().getPreviewSize().width + " " + camera.getParameters().getPreviewSize().height);
+        bytes = testDetect(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height, modelPath);
 
-        testDetect(testByte,
-                width,
-                height,
-                modelPath);
+            Mat mat = new Mat(mParameters.getPreviewSize().height, mParameters.getPreviewSize().width, CvType.CV_8UC1);
+            mat.put(0, 0, bytes);
+            Mat dst = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
+            Imgproc.cvtColor(mat, dst, Imgproc.COLOR_GRAY2RGB);
+            Bitmap bitmap = Bitmap.createBitmap(dst.width(), dst.height(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(dst, bitmap);
+            mParentFragment.testDraw(bitmap);
+
+//        Bitmap bitmap = Bitmap.createBitmap(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height)
+//        testDetect(testByte,
+//                width,
+//                height,
+//                modelPath);
 
 //        mParentFragment.drawFaces(testDetect(bytes,
 //                camera.getParameters().getPreviewSize().width,
@@ -172,5 +192,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     }
 
 //    public native int[] testDetect(String img, int width, int height, String model);
-    public native int[] testDetect(byte[] bytes, int width, int height, String result);
+//    public native int[] testDetect(byte[] bytes, int width, int height, String result);
+    public native byte[] testDetect(byte[] bytes, int width, int height, String result);
 }

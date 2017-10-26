@@ -1,6 +1,7 @@
 package com.sjgsu.ai.cameratest;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,5 +32,8 @@ public class CameraFragment extends Fragment {
 
     public void drawFaces(int[] faces) {
         mFaceView.setFaces(faces);
+    }
+    public void testDraw(Bitmap bitmap) {
+        mFaceView.test(bitmap);
     }
 }
