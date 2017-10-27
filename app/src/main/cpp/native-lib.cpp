@@ -4,6 +4,7 @@
 #define DOUBLE_TAG "JNIMSG"
 
 #include <jni.h>
+#include <time.h>
 #include <string>
 #include <cmath>
 #include <vector>
@@ -53,60 +54,63 @@ void merge(vector<int> &Xs, vector<int> &Ys, vector<int> &Ss, vector<float> &Sco
     return ;
 }
 
-//jintArray
-jbyteArray
+jintArray
 Java_com_sjgsu_ai_cameratest_CameraSurface_testDetect(JNIEnv *env, jobject thiz, jbyteArray data, jint width, jint height, jstring modelpath) {
+    clock_t time;
+    time = clock();
     int bufWid = (int) ceil(width / 16) * 16;
     __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "bufwid = %d\n", bufWid);
     jbyte *yuv = env->GetByteArrayElements(data, 0);
     cv::Mat img(height, width, CV_8UC1, (unsigned char *) yuv, bufWid);
-    jbyteArray testarray = env->NewByteArray(bufWid * height + 1);
-    env->SetByteArrayRegion(testarray, 0, bufWid * height, (jbyte*)img.data);
-    return testarray;
+//    cv::imwrite("/storage/sdcard0/img_test.jpg", img);
+//    jbyteArray testarray = env->NewByteArray(bufWid * height + 1);
+//    env->SetByteArrayRegion(testarray, 0, bufWid * height, (jbyte*)img.data);
+//    return testarray;
 
-//    cv::imwrite("/storage/emulated/legacy/com.double.test/img_test.jpg", img);
 //    const char* imgpath = env->GetStringUTFChars(data, 0);
 //    cv::Mat img = cv::imread(imgpath, 0);
 
-//    npd::npddetect npd;
-//    const char* path = env->GetStringUTFChars(modelpath, 0);
-//    npd.load(path);
-//    //visit the whole classifier
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%s\n", path);
-//
-//    int nt = 1;
-//    int nc = nt;
-//    int n;
-//    double t = (double)cvGetTickCount();
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 0);
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "cols %d rows %d\n", img.cols, img.rows);
-//    while(nc-- > 0)
-//        n = npd.detect(img.data, img.cols, img.rows);
-//    t = ((double)cvGetTickCount() - t) / ((double)cvGetTickFrequency()*1000.) ;
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 1);
-//
-//    vector< int >& Xs = npd.getXs();
-//    vector< int >& Ys = npd.getYs();
-//    vector< int >& Ss = npd.getSs();
-//    vector< float >& Scores = npd.getScores();
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", Xs.size());
-//    char buf[10];
-//    vector<Rect> groups;
-//    merge(Xs, Ys, Ss, Scores, groups);
-//
-//    jintArray result = env->NewIntArray(4 * Xs.size());
-//    jint *h = new jint[4 * Xs.size()];
-//    for (int i = 0; i < Xs.size(); ++i)
-//    {
-//        h[4 * i] = Xs[i];
-//        h[4 * i + 1] = Ys[i];
-//        h[4 * i + 2] = Xs[i] + Ss[i];
-//        h[4 * i + 3] = Ys[i] + Ss[i];
-//        __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d %d %d %d\n", h[4 * i], h[4 * i + 1], h[4 * i + 2], h[4 * i + 3]);
-//    }
-//    env->SetIntArrayRegion(result, 0, 4 * Xs.size(), h);
-//    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 3);
-//    return result;
+    npd::npddetect npd;
+    const char* path = env->GetStringUTFChars(modelpath, 0);
+    npd.load(path);
+    //visit the whole classifier
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%s\n", path);
+
+    int nt = 1;
+    int nc = nt;
+    int n;
+    double t = (double)cvGetTickCount();
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 0);
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "cols %d rows %d\n", img.cols, img.rows);
+    while(nc-- > 0)
+        n = npd.detect(img.data, img.cols, img.rows);
+    t = ((double)cvGetTickCount() - t) / ((double)cvGetTickFrequency()*1000.) ;
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 1);
+
+    vector< int >& Xs = npd.getXs();
+    vector< int >& Ys = npd.getYs();
+    vector< int >& Ss = npd.getSs();
+    vector< float >& Scores = npd.getScores();
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", Xs.size());
+    char buf[10];
+    vector<Rect> groups;
+    merge(Xs, Ys, Ss, Scores, groups);
+
+    jintArray result = env->NewIntArray(4 * Xs.size());
+    jint *h = new jint[4 * Xs.size()];
+    for (int i = 0; i < Xs.size(); ++i)
+    {
+        h[4 * i] = Xs[i];
+        h[4 * i + 1] = Ys[i];
+        h[4 * i + 2] = Xs[i] + Ss[i];
+        h[4 * i + 3] = Ys[i] + Ss[i];
+        __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d %d %d %d\n", h[4 * i], h[4 * i + 1], h[4 * i + 2], h[4 * i + 3]);
+    }
+    env->SetIntArrayRegion(result, 0, 4 * Xs.size(), h);
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 3);
+    time = clock() - time;
+    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "time %lf\n", (double)time/CLOCKS_PER_SEC);
+    return result;
 }
 
 }

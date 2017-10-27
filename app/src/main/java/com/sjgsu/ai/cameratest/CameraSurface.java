@@ -92,11 +92,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         mCamera.stopPreview();
-        if (mCamera != null) {
-            mParameters = mCamera.getParameters();
-            mCamera.setDisplayOrientation(90);
-            mCamera.setParameters(mParameters);
-        }
         cameraPreview();
         mCamera.setPreviewCallback(this);
     }
@@ -114,10 +109,11 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
         try {
             mCamera = Camera.open();
-            Camera.Parameters parameters = mCamera.getParameters();
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-            parameters.setPreviewFormat(ImageFormat.NV21);
-            mCamera.setParameters(parameters);
+            mParameters = mCamera.getParameters();
+            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+//            mParameters.setPreviewSize(960, 960);
+            mParameters.setPreviewFormat(ImageFormat.NV21);
+            mCamera.setParameters(mParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,15 +132,15 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         Log.i("JNIMSG", "byte length " + bytes.length);
         Log.i("JNIMSG", "PreviewSize width & height " + mParameters.getPreviewSize().width + " " + mParameters.getPreviewSize().height);
         Log.i("JNIMSG", "Camera size " + camera.getParameters().getPreviewSize().width + " " + camera.getParameters().getPreviewSize().height);
-        bytes = testDetect(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height, modelPath);
+//        bytes = testDetect(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height, modelPath);
 
-            Mat mat = new Mat(mParameters.getPreviewSize().height, mParameters.getPreviewSize().width, CvType.CV_8UC1);
-            mat.put(0, 0, bytes);
-            Mat dst = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
-            Imgproc.cvtColor(mat, dst, Imgproc.COLOR_GRAY2RGB);
-            Bitmap bitmap = Bitmap.createBitmap(dst.width(), dst.height(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(dst, bitmap);
-            mParentFragment.testDraw(bitmap);
+//            Mat mat = new Mat(mParameters.getPreviewSize().height, mParameters.getPreviewSize().width, CvType.CV_8UC1);
+//            mat.put(0, 0, bytes);
+//            Mat dst = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
+//            Imgproc.cvtColor(mat, dst, Imgproc.COLOR_GRAY2RGB);
+//            Bitmap bitmap = Bitmap.createBitmap(dst.width(), dst.height(), Bitmap.Config.ARGB_8888);
+//            Utils.matToBitmap(dst, bitmap);
+//            mParentFragment.testDraw(bitmap);
 
 //        Bitmap bitmap = Bitmap.createBitmap(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height)
 //        testDetect(testByte,
@@ -152,10 +148,10 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 //                height,
 //                modelPath);
 
-//        mParentFragment.drawFaces(testDetect(bytes,
-//                camera.getParameters().getPreviewSize().width,
-//                camera.getParameters().getPreviewSize().height,
-//                modelPath));
+        mParentFragment.drawFaces(testDetect(bytes,
+                camera.getParameters().getPreviewSize().width,
+                camera.getParameters().getPreviewSize().height,
+                modelPath));
     }
 
     private Bitmap convertGrayImg(Bitmap bitmap) {
@@ -192,6 +188,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     }
 
 //    public native int[] testDetect(String img, int width, int height, String model);
-//    public native int[] testDetect(byte[] bytes, int width, int height, String result);
-    public native byte[] testDetect(byte[] bytes, int width, int height, String result);
+    public native int[] testDetect(byte[] bytes, int width, int height, String result);
+//    public native byte[] testDetect(byte[] bytes, int width, int height, String result);
 }
