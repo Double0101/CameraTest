@@ -132,21 +132,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         Log.i("JNIMSG", "byte length " + bytes.length);
         Log.i("JNIMSG", "PreviewSize width & height " + mParameters.getPreviewSize().width + " " + mParameters.getPreviewSize().height);
         Log.i("JNIMSG", "Camera size " + camera.getParameters().getPreviewSize().width + " " + camera.getParameters().getPreviewSize().height);
-//        bytes = testDetect(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height, modelPath);
-
-//            Mat mat = new Mat(mParameters.getPreviewSize().height, mParameters.getPreviewSize().width, CvType.CV_8UC1);
-//            mat.put(0, 0, bytes);
-//            Mat dst = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
-//            Imgproc.cvtColor(mat, dst, Imgproc.COLOR_GRAY2RGB);
-//            Bitmap bitmap = Bitmap.createBitmap(dst.width(), dst.height(), Bitmap.Config.ARGB_8888);
-//            Utils.matToBitmap(dst, bitmap);
-//            mParentFragment.testDraw(bitmap);
-
-//        Bitmap bitmap = Bitmap.createBitmap(bytes, mParameters.getPreviewSize().width, mParameters.getPreviewSize().height)
-//        testDetect(testByte,
-//                width,
-//                height,
-//                modelPath);
 
         mParentFragment.drawFaces(testDetect(bytes,
                 camera.getParameters().getPreviewSize().width,
