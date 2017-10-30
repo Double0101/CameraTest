@@ -40,11 +40,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     private Camera.Parameters mParameters;
     private String modelPath;
 
-//    private String imgPath;
-    private int testFlag = 0;
-    private int width, height;
-    private byte[] testByte;
-
     static {
         System.loadLibrary("native-lib");
         System.loadLibrary("opencv_java3");
@@ -54,25 +49,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         super(context, attrs);
         RawResource mRawResource = new RawResource(context, R.raw.newmodel);
         modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
-
-        // test
-//        RawResource rawResource = new RawResource(context, R.raw.img_test_jni);
-//        imgPath = rawResource.save("img_test.jpg", false).getAbsolutePath();
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
-//        width = options.outWidth;
-//        height = options.outHeight;
-
-        Drawable drawable = getResources().getDrawable(R.drawable.img_test_jni);
-        Bitmap bitmap = convertGrayImg(((BitmapDrawable) drawable).getBitmap());
-        width = bitmap.getWidth();
-        height = bitmap.getHeight();
-        Log.i("JNIMSG", width + " " + height);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        testByte = out.toByteArray();
-        Log.i("JNIMSG", "byte[] length " + testByte.length);
 
         mHolder = getHolder();
         mHolder.addCallback(this);
@@ -111,7 +87,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera = Camera.open();
             mParameters = mCamera.getParameters();
             mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-//            mParameters.setPreviewSize(960, 960);
             mParameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(mParameters);
 
@@ -139,22 +114,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
                 modelPath));
     }
 
-    private Bitmap convertGrayImg(Bitmap bitmap) {
-        int width, height;
-        height = bitmap.getHeight();
-        width = bitmap.getWidth();
-
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bitmap, 0, 0, paint);
-        return bmpGrayscale;
-    }
-
     private void cameraPreview() {
         try {
             mCamera.setPreviewDisplay(mHolder);
@@ -172,7 +131,5 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-//    public native int[] testDetect(String img, int width, int height, String model);
     public native int[] testDetect(byte[] bytes, int width, int height, String result);
-//    public native byte[] testDetect(byte[] bytes, int width, int height, String result);
 }

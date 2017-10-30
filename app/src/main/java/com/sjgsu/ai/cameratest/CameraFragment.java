@@ -33,7 +33,4 @@ public class CameraFragment extends Fragment {
     public void drawFaces(int[] faces) {
         mFaceView.setFaces(faces);
     }
-    public void testDraw(Bitmap bitmap) {
-        mFaceView.test(bitmap);
-    }
 }

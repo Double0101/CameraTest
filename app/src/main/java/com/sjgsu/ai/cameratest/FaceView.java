@@ -18,9 +18,6 @@ public class FaceView extends SurfaceView {
 
     private int[] mFaces;
     private Paint mPaint;
-
-    private Bitmap mBitmap;
-
     private SurfaceHolder mHolder;
 
     public FaceView(Context context, AttributeSet attrs) {
@@ -41,20 +38,12 @@ public class FaceView extends SurfaceView {
         invalidate();
     }
 
-    public void test(Bitmap bitmap) {
-        mBitmap = bitmap;
-        invalidate();
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (mFaces != null) {
             for (int i = 0; i < mFaces.length; i = i + 4) {
                 canvas.drawRect(mFaces[i], mFaces[i + 1], mFaces[i + 2], mFaces[i + 3], mPaint);
             }
-        }
-        if (mBitmap != null) {
-            canvas.drawBitmap(mBitmap, 0, 0, null);
         }
         super.onDraw(canvas);
     }
