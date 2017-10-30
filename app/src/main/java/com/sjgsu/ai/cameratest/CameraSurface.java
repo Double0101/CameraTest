@@ -1,129 +1,135 @@
 package com.sjgsu.ai.cameratest;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.os.Build;
-import android.os.Handler;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.ImageFormat;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
+import android.media.Image;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
-import java.util.Arrays;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
 
 /**
- * Created by Double on 19/08/2017.
+ * Created by Double on 25/09/2017.
  */
 
-public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback{
+public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
-//    private Handler mainHandler;
-    private String cameraId;
     private SurfaceHolder mHolder;
-    private CameraManager mCameraManager;
-    private CameraDevice mCameraDevice;
-    private CameraCaptureSession mCameraCaptureSession;
+    private CameraFragment mParentFragment;
+    private Camera mCamera;
+    private Camera.Parameters mParameters;
+    private String modelPath;
+
+    static {
+        System.loadLibrary("native-lib");
+        System.loadLibrary("opencv_java3");
+    }
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
+        RawResource mRawResource = new RawResource(context, R.raw.newmodel);
+        modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
 
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setParentFragment(CameraFragment fragment) {
+        mParentFragment = fragment;
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        initCamera2();
+        if (!openCamera()) {
+            cameraPreview();
+        }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
+        mCamera.stopPreview();
+        cameraPreview();
+        mCamera.setPreviewCallback(this);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        if (null != mCameraDevice) {
-            mCameraDevice.close();
-            mCameraDevice = null;
-        }
+        cameraRelease();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void initCamera2() {
-//        mainHandler = new Handler(getContext().getMainLooper());
-        cameraId = String.valueOf(CameraCharacteristics.LENS_FACING_FRONT);
-        mCameraManager = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
+    private boolean openCamera() {
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
         try {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mCameraManager.openCamera(cameraId, stateCallback, null/*mainHandler*/);
-        } catch (CameraAccessException e) {
+            mCamera = Camera.open();
+            mParameters = mCamera.getParameters();
+            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            mParameters.setPreviewFormat(ImageFormat.NV21);
+            mCamera.setParameters(mParameters);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            cameraRelease();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+
+        // test
+        if (bytes == null) return;
+        Log.i("JNIMSG", "byte length " + bytes.length);
+        Log.i("JNIMSG", "PreviewSize width & height " + mParameters.getPreviewSize().width + " " + mParameters.getPreviewSize().height);
+        Log.i("JNIMSG", "Camera size " + camera.getParameters().getPreviewSize().width + " " + camera.getParameters().getPreviewSize().height);
+
+        mParentFragment.drawFaces(testDetect(bytes,
+                camera.getParameters().getPreviewSize().width,
+                camera.getParameters().getPreviewSize().height,
+                modelPath));
+    }
+
+    private void cameraPreview() {
+        try {
+            mCamera.setPreviewDisplay(mHolder);
+            mCamera.startPreview();
+        } catch (Exception e) {
+            cameraRelease();
             e.printStackTrace();
         }
     }
 
-    private CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
-
-        @Override
-        public void onOpened(@NonNull CameraDevice cameraDevice) {
-            mCameraDevice = cameraDevice;
-            takePreview();
-        }
-
-        @Override
-        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            if (null != mCameraDevice) {
-                mCameraDevice.close();
-                mCameraDevice = null;
-            }
-        }
-
-        @Override
-        public void onError(@NonNull CameraDevice cameraDevice, int i) {
-            Toast.makeText(getContext(), "CameraDevice Open Failed", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private void takePreview() {
-        try {
-            final CaptureRequest.Builder previewRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            previewRequestBuilder.addTarget(mHolder.getSurface());
-            mCameraDevice.createCaptureSession(Arrays.asList(mHolder.getSurface()), new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    if (null == mCameraDevice) return;
-                    mCameraCaptureSession = cameraCaptureSession;
-                    try {
-                        previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-                        CaptureRequest previewRequest = previewRequestBuilder.build();
-                        mCameraCaptureSession.setRepeatingRequest(previewRequest, null, null);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getContext(), "Camera Config Failed", Toast.LENGTH_SHORT).show();
-                }
-            }, null);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
+    private void cameraRelease() {
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
         }
     }
+
+    public native int[] testDetect(byte[] bytes, int width, int height, String result);
 }
