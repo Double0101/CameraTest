@@ -60,36 +60,39 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        if (!openCamera()) {
-            cameraPreview();
-        }
+        cameraPreview();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        mCamera.stopPreview();
         cameraPreview();
         mCamera.setPreviewCallback(this);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        cameraRelease();
+        stopPreview();
     }
 
-    private boolean openCamera() {
-        if (mCamera != null) {
-            mCamera.stopPreview();
-            mCamera.release();
-            mCamera = null;
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        if (bytes == null) return;
+        mParentFragment.drawFaces(testDetect(bytes,
+                camera.getParameters().getPreviewSize().width,
+                camera.getParameters().getPreviewSize().height,
+                modelPath));
+    }
+
+    public boolean openCamera() {
+        mCamera = Camera.open();
+        if (mCamera == null) {
+            return false;
         }
         try {
-            mCamera = Camera.open();
             mParameters = mCamera.getParameters();
             mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             mParameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(mParameters);
-
         } catch (Exception e) {
             e.printStackTrace();
             cameraRelease();
@@ -99,22 +102,10 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         return true;
     }
 
-    @Override
-    public void onPreviewFrame(byte[] bytes, Camera camera) {
-
-        // test
-        if (bytes == null) return;
-        Log.i("JNIMSG", "byte length " + bytes.length);
-        Log.i("JNIMSG", "PreviewSize width & height " + mParameters.getPreviewSize().width + " " + mParameters.getPreviewSize().height);
-        Log.i("JNIMSG", "Camera size " + camera.getParameters().getPreviewSize().width + " " + camera.getParameters().getPreviewSize().height);
-
-        mParentFragment.drawFaces(testDetect(bytes,
-                camera.getParameters().getPreviewSize().width,
-                camera.getParameters().getPreviewSize().height,
-                modelPath));
-    }
-
-    private void cameraPreview() {
+    public void cameraPreview() {
+        if (mCamera == null) {
+            return;
+        }
         try {
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
@@ -124,8 +115,16 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    private void cameraRelease() {
+    public void stopPreview() {
+        if (mCamera == null) {
+            return;
+        }
+        mCamera.stopPreview();
+    }
+
+    public void cameraRelease() {
         if (mCamera != null) {
+            mCamera.setPreviewCallback(null);
             mCamera.release();
             mCamera = null;
         }

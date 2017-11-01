@@ -30,6 +30,18 @@ public class CameraFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCameraSurface.openCamera();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mCameraSurface.cameraRelease();
+    }
+
     public void drawFaces(int[] faces) {
         mFaceView.setFaces(faces);
     }

@@ -31,6 +31,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile 'com.google.dagger:dagger-android:2.8'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     testCompile 'junit:junit:4.12'
     compile project(':openCVLibrary330')
 }
