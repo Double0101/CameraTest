@@ -34,5 +34,4 @@ dependencies {
     compile 'com.google.dagger:dagger-android:2.8'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     testCompile 'junit:junit:4.12'
-    compile project(':openCVLibrary330')
 }

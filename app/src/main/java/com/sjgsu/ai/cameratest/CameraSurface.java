@@ -1,32 +1,11 @@
 package com.sjgsu.ai.cameratest;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
-import android.media.Image;
-import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
 
 /**
  * Created by Double on 25/09/2017.
@@ -91,6 +70,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         try {
             mParameters = mCamera.getParameters();
             mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            mParameters.setPreviewSize(640, 480);
             mParameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(mParameters);
         } catch (Exception e) {
