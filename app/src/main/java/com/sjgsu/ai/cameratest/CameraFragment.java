@@ -21,15 +21,17 @@ public class CameraFragment extends Fragment {
     private FaceView mFaceView;
     private CameraSurface mCameraSurface;
 
+    private Handler mHandler;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_layout, container, false);
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
-        mCameraSurface.setParentFragment(this);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
 
+        mHandler = new PreviewHandler(getContext(), mFaceView, mCameraSurface);
+        mCameraSurface.setHandler(mHandler);
         return view;
     }
 

@@ -3,6 +3,8 @@ package com.sjgsu.ai.cameratest;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,27 +16,19 @@ import android.view.SurfaceView;
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
     private SurfaceHolder mHolder;
-    private CameraFragment mParentFragment;
+    private Handler mHandler;
     private Camera mCamera;
     private Camera.Parameters mParameters;
-    private String modelPath;
-
-    static {
-        System.loadLibrary("native-lib");
-        System.loadLibrary("opencv_java3");
-    }
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
-        RawResource mRawResource = new RawResource(context, R.raw.newmodel);
-        modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
 
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
 
-    public void setParentFragment(CameraFragment fragment) {
-        mParentFragment = fragment;
+    public void setHandler(Handler handler) {
+        mHandler = handler;
     }
 
     @Override
@@ -57,10 +51,14 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         if (bytes == null) return;
 
-        mParentFragment.drawFaces(testDetect(bytes,
-                camera.getParameters().getPreviewSize().width,
-                camera.getParameters().getPreviewSize().height,
-                modelPath));
+        Message message = mHandler.obtainMessage();
+        message.what = PreviewHandler.UPDATE_DETECT;
+        message.obj = bytes;
+        message.sendToTarget();
+//        mParentFragment.drawFaces(testDetect(bytes,
+//                camera.getParameters().getPreviewSize().width,
+//                camera.getParameters().getPreviewSize().height,
+//                modelPath));
     }
 
     public boolean openCamera() {
@@ -111,5 +109,4 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public native int[] testDetect(byte[] bytes, int width, int height, String result);
 }
