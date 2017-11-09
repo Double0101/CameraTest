@@ -55,10 +55,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         message.what = PreviewHandler.UPDATE_DETECT;
         message.obj = bytes;
         message.sendToTarget();
-//        mParentFragment.drawFaces(testDetect(bytes,
-//                camera.getParameters().getPreviewSize().width,
-//                camera.getParameters().getPreviewSize().height,
-//                modelPath));
     }
 
     public boolean openCamera() {

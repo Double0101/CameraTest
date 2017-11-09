@@ -30,7 +30,7 @@ public class CameraFragment extends Fragment {
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
 
-        mHandler = new PreviewHandler(getContext(), mFaceView, mCameraSurface);
+        mHandler = new PreviewHandler(getContext(), mFaceView);
         mCameraSurface.setHandler(mHandler);
         return view;
     }
@@ -46,9 +46,4 @@ public class CameraFragment extends Fragment {
         super.onPause();
         mCameraSurface.cameraRelease();
     }
-
-    public void drawFaces(int[] faces) {
-        mFaceView.setFaces(faces);
-    }
-
 }

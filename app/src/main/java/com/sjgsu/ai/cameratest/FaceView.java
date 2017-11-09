@@ -19,6 +19,7 @@ public class FaceView extends SurfaceView {
     private int[] mFaces;
     private Paint mPaint;
     private SurfaceHolder mHolder;
+    private double scaleX, scaleY;
 
     public FaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -33,6 +34,13 @@ public class FaceView extends SurfaceView {
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        scaleX = getWidth() / 640;
+        scaleY = getHeight() / 480;
+    }
+
     public void setFaces(int[] faces) {
         this.mFaces = faces;
         invalidate();
@@ -42,7 +50,8 @@ public class FaceView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
         if (mFaces != null) {
             for (int i = 0; i < mFaces.length; i = i + 4) {
-                canvas.drawRect(mFaces[i], mFaces[i + 1], mFaces[i + 2], mFaces[i + 3], mPaint);
+                canvas.drawRect((int) (mFaces[i] * scaleX), (int) (mFaces[i + 1] * scaleY),
+                        (int) (mFaces[i + 2] * scaleX), (int) (mFaces[i + 3] * scaleY), mPaint);
             }
         }
         super.onDraw(canvas);
