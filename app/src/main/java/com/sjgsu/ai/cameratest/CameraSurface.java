@@ -56,6 +56,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         if (bytes == null) return;
+
         mParentFragment.drawFaces(testDetect(bytes,
                 camera.getParameters().getPreviewSize().width,
                 camera.getParameters().getPreviewSize().height,

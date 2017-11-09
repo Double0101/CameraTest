@@ -3,6 +3,8 @@ package com.sjgsu.ai.cameratest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
@@ -18,6 +20,7 @@ public class CameraFragment extends Fragment {
 
     private FaceView mFaceView;
     private CameraSurface mCameraSurface;
+
 
     @Nullable
     @Override
@@ -45,4 +48,5 @@ public class CameraFragment extends Fragment {
     public void drawFaces(int[] faces) {
         mFaceView.setFaces(faces);
     }
+
 }
