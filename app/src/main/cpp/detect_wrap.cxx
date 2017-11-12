@@ -878,7 +878,7 @@ SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,int i,std::ve
 extern "C" {
 #endif
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< int > *result = 0 ;
   
@@ -890,7 +890,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_10(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< int >::size_type arg1 ;
   std::vector< int > *result = 0 ;
@@ -904,7 +904,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1vectori_1_1SWIG_11(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_vectori_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
@@ -919,7 +919,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_vectori_1size(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_vectori_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
@@ -934,7 +934,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_vectori_1capacity(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   
@@ -947,7 +947,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1reserve(JNIEnv *j
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_zjgsu_face_detectJNI_vectori_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   bool result;
@@ -962,7 +962,7 @@ SWIGEXPORT jboolean JNICALL Java_com_zjgsu_face_detectJNI_vectori_1isEmpty(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   
   (void)jenv;
@@ -973,7 +973,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1clear(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::value_type *arg2 = 0 ;
   std::vector< int >::value_type temp2 ;
@@ -988,7 +988,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1add(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_vectori_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jint jresult = 0 ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   int arg2 ;
@@ -1012,7 +1012,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_vectori_1get(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_vectori_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   int arg2 ;
   std::vector< int >::value_type *arg3 = 0 ;
@@ -1036,7 +1036,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_vectori_1set(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_delete_1vectori(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_delete_1vectori(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   
   (void)jenv;
@@ -1046,7 +1046,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_delete_1vectori(JNIEnv *je
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   npddetect *result = 0 ;
   
@@ -1058,7 +1058,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_10
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2) {
   jlong jresult = 0 ;
   int arg1 ;
   int arg2 ;
@@ -1074,7 +1074,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_new_1npddetect_1_1SWIG_11
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_delete_1npddetect(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_delete_1npddetect(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   npddetect *arg1 = (npddetect *) 0 ;
   
   (void)jenv;
@@ -1084,7 +1084,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_delete_1npddetect(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1load(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1load(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -1102,7 +1102,7 @@ SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1load(JNIEnv *je
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4, jdouble jarg5, jdouble jarg6) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4, jdouble jarg5, jdouble jarg6) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
@@ -1127,7 +1127,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWI
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4, jdouble jarg5) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4, jdouble jarg5) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
@@ -1150,7 +1150,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWI
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3, jint jarg4) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
@@ -1171,7 +1171,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1gridScan_1_1SWI
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyteArray jarg2, jint jarg3, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyteArray jarg2, jint jarg3, jint jarg4) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   signed char *arg2 ;
@@ -1195,7 +1195,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   cv::Mat *arg2 = 0 ;
@@ -1216,7 +1216,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1238,7 +1238,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1detect_1_1SWIG_
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4, jdouble jarg5, jdouble jarg6) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4, jdouble jarg5, jdouble jarg6) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1268,7 +1268,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4, jdouble jarg5) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4, jdouble jarg5) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1296,7 +1296,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1prescandetect_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3, jint jarg4) {
   jint jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1322,7 +1322,7 @@ SWIGEXPORT jint JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1prescandetect_1
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getXs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1getXs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   std::vector< int > *result = 0 ;
@@ -1337,7 +1337,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getXs(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getYs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1getYs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   std::vector< int > *result = 0 ;
@@ -1352,7 +1352,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getYs(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getSs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1getSs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   std::vector< int > *result = 0 ;
@@ -1367,7 +1367,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getSs(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getScores(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1getScores(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   npddetect *arg1 = (npddetect *) 0 ;
   std::vector< float > *result = 0 ;
@@ -1382,7 +1382,7 @@ SWIGEXPORT jlong JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1getScores(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_com_zjgsu_face_detectJNI_npddetect_1draw(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_comm_zjgsu_face_detectJNI_npddetect_1draw(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   npddetect *arg1 = (npddetect *) 0 ;
   char *arg2 = (char *) 0 ;
   

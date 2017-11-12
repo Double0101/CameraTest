@@ -9,6 +9,11 @@
 package comm.zjgsu.face;
 
 public class detectJNI {
+
+  static {
+      System.loadLibrary("detect_wrap");
+  }
+
   public final static native long new_vectori__SWIG_0();
   public final static native long new_vectori__SWIG_1(long jarg1);
   public final static native long vectori_size(long jarg1, vectori jarg1_);
