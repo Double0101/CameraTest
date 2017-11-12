@@ -18,20 +18,6 @@ using namespace cv;
 using namespace std;
 
 extern "C" {
-jstring
-Java_com_sjgsu_ai_cameratest_TextFragment_getString(JNIEnv *env, jobject thiz)
-{
-    return env->NewStringUTF("Hello world");
-}
-
-jstring
-Java_com_sjgsu_ai_cameratest_TextFragment_testOpenCV(JNIEnv *env, jobject thiz, jlong addrGray, jlong addrRgba) {
-    cv::Rect();
-    cv::Mat();
-    std::string hello2 = "Opencv test success";
-    return env->NewStringUTF(hello2.c_str());
-}
-
 bool isEmbeded(Rect &x, Rect &y)
 {
 	int sx = x.area();
@@ -61,7 +47,6 @@ Java_com_sjgsu_ai_cameratest_DetectThread_testDetect(JNIEnv *env, jobject thiz, 
     clock_t starttime, tmptime;
     starttime = tmptime = clock();
     int bufWid = (int) ceil(width / 16) * 16;
-    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "bufwid = %d\n", bufWid);
     jbyte *yuv = env->GetByteArrayElements(data, 0);
     cv::Mat img(height, width, CV_8UC1, (unsigned char *) yuv, bufWid);
     PRINT_TIME("get mat", clock() - tmptime);
@@ -83,7 +68,6 @@ Java_com_sjgsu_ai_cameratest_DetectThread_testDetect(JNIEnv *env, jobject thiz, 
     while(nc-- > 0)
         n = npd.detect(img.data, img.cols, img.rows);
     t = ((double)cvGetTickCount() - t) / ((double)cvGetTickFrequency()*1000.) ;
-    __android_log_print(ANDROID_LOG_INFO, DOUBLE_TAG, "%d\n", 1);
     PRINT_TIME("detect", clock() - tmptime);
 
     tmptime = clock();

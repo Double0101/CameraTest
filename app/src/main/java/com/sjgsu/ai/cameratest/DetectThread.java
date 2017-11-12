@@ -3,6 +3,7 @@ package com.sjgsu.ai.cameratest;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * Created by Double on 09/11/2017.
@@ -19,18 +20,21 @@ public class DetectThread extends Thread {
     private int mWidth;
     private int mHeight;
     private String modelPath;
-    private boolean execute = false;
+    public static boolean execute = false;
     private Handler mHandler;
 
-    public DetectThread(Context context, Handler handler) {
+    public DetectThread(Handler handler, byte[] bytes, int width, int height, String path) {
         mHandler = handler;
-        RawResource mRawResource = new RawResource(context, R.raw.newmodel);
-        modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
+        imgBytes = bytes;
+        mWidth = width;
+        mHeight = height;
+        modelPath = path;
     }
 
     @Override
     public void run() {
         super.run();
+        Log.i("MSGDOUBLE", "run");
         Message msg = mHandler.obtainMessage();
         msg.what = PreviewHandler.UPDATE_VIEW;
         msg.obj = testDetect(imgBytes, mWidth, mHeight, modelPath);
@@ -38,13 +42,10 @@ public class DetectThread extends Thread {
         execute = false;
     }
 
-    public void detect(byte[] bytes, int width, int height) {
+    public static void detect(byte[] bytes, int width, int height, Handler handler, String path) {
         if (!execute) {
             execute = true;
-            imgBytes = bytes;
-            mWidth = width;
-            mHeight = height;
-            this.start();
+            new DetectThread(handler, bytes, width, height, path).start();
         }
     }
 

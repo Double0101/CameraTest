@@ -128,23 +128,23 @@ namespace npd{
 			freedetectspace();
 
 		// Malloc.
-		m_Tneighbors = (int*)malloc(sizeof(int) * n);
+		m_Tneighbors = (int*) malloc(sizeof(int) * n);
 		if(m_Tneighbors == NULL)
 			return;
 
-		m_Tweight = (float*)malloc(sizeof(float) * n);
+		m_Tweight = (float*) malloc(sizeof(float) * n);
 		if(m_Tweight == NULL)
 			return;
 
-		m_Txs = (float*)malloc(sizeof(float) * n);
+		m_Txs = (float*) malloc(sizeof(float) * n);
 		if(m_Txs == NULL)
 			return;
 
-		m_Tys = (float*)malloc(sizeof(float) * n);
+		m_Tys = (float*) malloc(sizeof(float) * n);
 		if(m_Tys == NULL)
 			return;
 
-		m_Tss = (float*)malloc(sizeof(float) * n);
+		m_Tss = (float*) malloc(sizeof(float) * n);
 		if(m_Tss == NULL)
 			return;
 
@@ -219,7 +219,7 @@ namespace npd{
 
 		if(m_numScan > m_maxScanNum)
 		{
-			if(2*m_maxScanNum > m_numScan)
+			if(2 * m_maxScanNum > m_numScan)
 				mallocsacnspace(m_maxScanNum * 2);
 			else
 				mallocsacnspace(m_numScan + m_maxScanNum);

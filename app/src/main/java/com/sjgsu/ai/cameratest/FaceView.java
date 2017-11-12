@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -39,6 +40,7 @@ public class FaceView extends SurfaceView {
         super.onWindowFocusChanged(hasWindowFocus);
         scaleX = getWidth() / 640;
         scaleY = getHeight() / 480;
+        Log.i("MSGDOUBLE0", getWidth() + " " + getHeight());
     }
 
     public void setFaces(int[] faces) {
@@ -49,10 +51,12 @@ public class FaceView extends SurfaceView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mFaces != null) {
+            Log.i("MSGDOUBLE", "onDraw");
             for (int i = 0; i < mFaces.length; i = i + 4) {
                 canvas.drawRect((int) (mFaces[i] * scaleX), (int) (mFaces[i + 1] * scaleY),
                         (int) (mFaces[i + 2] * scaleX), (int) (mFaces[i + 3] * scaleY), mPaint);
             }
+
         }
         super.onDraw(canvas);
     }
