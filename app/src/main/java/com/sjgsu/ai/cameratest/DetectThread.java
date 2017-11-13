@@ -5,17 +5,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import comm.zjgsu.face.npddetect;
+
 /**
  * Created by Double on 09/11/2017.
  */
 
 public class DetectThread extends Thread {
-
-    static {
-        System.loadLibrary("native-lib");
-        System.loadLibrary("opencv_java3");
-    }
-
     private byte[] imgBytes;
     private int mWidth;
     private int mHeight;
@@ -37,7 +33,9 @@ public class DetectThread extends Thread {
         Log.i("MSGDOUBLE", "run");
         Message msg = mHandler.obtainMessage();
         msg.what = PreviewHandler.UPDATE_VIEW;
-        msg.obj = testDetect(imgBytes, mWidth, mHeight, modelPath);
+//        msg.obj = testDetect(imgBytes, mWidth, mHeight, modelPath);
+        npddetect d = new npddetect();
+//        d.load(modelPath);
         msg.sendToTarget();
         execute = false;
     }
@@ -49,5 +47,5 @@ public class DetectThread extends Thread {
         }
     }
 
-    public native int[] testDetect(byte[] bytes, int width, int height, String result);
+//    public native int[] testDetect(byte[] bytes, int width, int height, String result);
 }
