@@ -20,10 +20,10 @@ public class DetectThread extends Thread {
     private int mHeight;
     private npddetect mNpdDetect;
     public static boolean execute = false;
-    private Handler mHandler;
+    private ViewController mController;
 
-    public DetectThread(Handler handler, byte[] bytes, int width, int height, npddetect npd) {
-        mHandler = handler;
+    public DetectThread(ViewController controller, byte[] bytes, int width, int height, npddetect npd) {
+        mController = controller;
         imgBytes = bytes;
         mWidth = width;
         mHeight = height;
@@ -33,8 +33,6 @@ public class DetectThread extends Thread {
     @Override
     public void run() {
         super.run();
-        Message msg = mHandler.obtainMessage();
-        msg.what = PreviewHandler.UPDATE_VIEW;
         mNpdDetect.detect(imgBytes, mWidth, mHeight);
         vectori x = mNpdDetect.getXs();
         vectori y = mNpdDetect.getYs();
@@ -45,15 +43,14 @@ public class DetectThread extends Thread {
             result[i + 1] = y.get(i);
             result[i + 2] = s.get(i);
         }
-        msg.obj = result;
-        msg.sendToTarget();
+        mController.sendFaces(result);
         execute = false;
     }
 
-    public static void detect(byte[] bytes, int width, int height, Handler handler, npddetect npd) {
+    public static void detect(byte[] bytes, int width, int height, ViewController controller, npddetect npd) {
         if (!execute) {
             execute = true;
-            new DetectThread(handler, bytes, width, height, npd).start();
+            new DetectThread(controller, bytes, width, height, npd).start();
         }
     }
 

@@ -17,7 +17,7 @@ public class CameraFragment extends Fragment {
     private FaceView mFaceView;
     private CameraSurface mCameraSurface;
 
-    private Handler mHandler;
+    private ViewController mController;
 
     @Nullable
     @Override
@@ -26,8 +26,8 @@ public class CameraFragment extends Fragment {
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
 
-        mHandler = new PreviewHandler(getContext(), mFaceView);
-        mCameraSurface.setHandler(mHandler);
+        mController = new PreviewHandler(getContext(), mFaceView);
+        mCameraSurface.setController(mController);
         return view;
     }
 

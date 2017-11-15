@@ -16,7 +16,7 @@ import android.view.SurfaceView;
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
     private SurfaceHolder mHolder;
-    private Handler mHandler;
+    private ViewController mController;
     private Camera mCamera;
     private Camera.Parameters mParameters;
 
@@ -27,8 +27,8 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
     }
 
-    public void setHandler(Handler handler) {
-        mHandler = handler;
+    public void setController(ViewController controller) {
+        mController = controller;
     }
 
     @Override
@@ -51,10 +51,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     public void onPreviewFrame(byte[] bytes, Camera camera) {
         if (bytes == null) return;
 
-        Message message = mHandler.obtainMessage();
-        message.what = PreviewHandler.UPDATE_DETECT;
-        message.obj = bytes;
-        message.sendToTarget();
+        mController.sendImage(bytes);
     }
 
     public boolean openCamera() {

@@ -11,11 +11,8 @@ import comm.zjgsu.face.npddetect;
  * Created by Double on 09/11/2017.
  */
 
-public class PreviewHandler extends Handler {
+public class PreviewHandler extends Handler implements ViewController{
     private final String TAG = "MSG_Camera";
-
-    public static final int UPDATE_DETECT = 0;
-    public static final int UPDATE_VIEW = 1;
 
     private FaceView mFaceView;
 
@@ -44,4 +41,19 @@ public class PreviewHandler extends Handler {
         super.handleMessage(msg);
     }
 
+    @Override
+    public void sendImage(byte[] bytes) {
+        Message msg = obtainMessage();
+        msg.what = UPDATE_DETECT;
+        msg.obj = bytes;
+        msg.sendToTarget();
+    }
+
+    @Override
+    public void sendFaces(int[] faces) {
+        Message msg = obtainMessage();
+        msg.what = UPDATE_VIEW;
+        msg.obj = faces;
+        msg.sendToTarget();
+    }
 }
