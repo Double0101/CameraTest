@@ -1,4 +1,4 @@
-package com.sjgsu.ai.cameratest;
+package com.zjgsu.ai.cameratest;
 
 import android.content.Context;
 import android.graphics.Bitmap;

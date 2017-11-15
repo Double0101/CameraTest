@@ -1,11 +1,9 @@
-package com.sjgsu.ai.cameratest;
+package com.zjgsu.ai.cameratest;
 
 import android.content.Context;
-import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.SurfaceView;
 
 import comm.zjgsu.face.npddetect;
 

@@ -1,4 +1,4 @@
-package com.sjgsu.ai.cameratest;
+package com.zjgsu.ai.cameratest;
 
 import android.Manifest;
 import android.content.Context;
