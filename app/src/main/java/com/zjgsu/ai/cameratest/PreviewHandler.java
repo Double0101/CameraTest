@@ -12,6 +12,7 @@ import comm.zjgsu.face.npddetect;
  */
 
 public class PreviewHandler extends Handler {
+    private final String TAG = "MSG_Camera";
 
     public static final int UPDATE_DETECT = 0;
     public static final int UPDATE_VIEW = 1;
@@ -24,6 +25,7 @@ public class PreviewHandler extends Handler {
         mFaceView = faceView;
         RawResource mRawResource = new RawResource(context, R.raw.newmodel);
         String modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
+        Log.i(TAG, "PreviewHandler: " + modelPath);
         mNpdDetect = new npddetect();
         mNpdDetect.load(modelPath);
     }
@@ -32,11 +34,9 @@ public class PreviewHandler extends Handler {
     public void handleMessage(final Message msg) {
         switch (msg.what) {
             case UPDATE_DETECT:
-                Log.i("MSGDOUBLE", "updatedetect");
                 DetectThread.detect((byte[]) msg.obj, 640, 480, this, mNpdDetect);
                 break;
             case UPDATE_VIEW:
-                Log.i("MSGDOUBLE", "updateview");
                 mFaceView.setFaces((int[]) msg.obj);
             default:
                 break;

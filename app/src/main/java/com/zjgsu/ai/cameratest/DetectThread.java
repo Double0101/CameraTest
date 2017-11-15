@@ -30,7 +30,6 @@ public class DetectThread extends Thread {
     @Override
     public void run() {
         super.run();
-        Log.i("MSGDOUBLE", "run");
         Message msg = mHandler.obtainMessage();
         msg.what = PreviewHandler.UPDATE_VIEW;
         mNpdDetect.detect(imgBytes, mWidth, mHeight);
@@ -43,7 +42,6 @@ public class DetectThread extends Thread {
             result[i + 1] = y.get(i);
             result[i + 2] = s.get(i);
         }
-        Log.i("MSGDOUBLENNNN", x.size()+"");
         msg.obj = result;
         msg.sendToTarget();
         execute = false;

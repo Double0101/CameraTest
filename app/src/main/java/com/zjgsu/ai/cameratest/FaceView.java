@@ -19,6 +19,8 @@ import android.view.SurfaceView;
 
 public class FaceView extends SurfaceView {
 
+    private final String TAG = "MSG_Camera";
+
     private int[] mFaces;
     private Paint mPaint;
     private SurfaceHolder mHolder;
@@ -38,6 +40,8 @@ public class FaceView extends SurfaceView {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         scaleX = dm.widthPixels / 640;
         scaleY = dm.heightPixels / 480;
+        Log.i(TAG, "FaceView: DisplayMetrics w" + dm.widthPixels + " h" + dm.heightPixels);
+        Log.i(TAG, "FaceView: scaleX = " + scaleX + " scaleY = " + scaleY);
     }
 
     public void setFaces(int[] faces) {
@@ -47,8 +51,7 @@ public class FaceView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mFaces != null) {
-            Log.i("MSGDOUBLE", "onDraw");
+        if (mFaces != null && mFaces.length % 3 == 0) {
             for (int i = 0; i < mFaces.length; i = i + 3) {
                 canvas.drawRect((int) (mFaces[i] * scaleX),
                         (int) (mFaces[i + 1] * scaleY),
