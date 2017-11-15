@@ -12,6 +12,9 @@ import comm.zjgsu.face.vectori;
  */
 
 public class DetectThread extends Thread {
+
+    private final String TAG = "MSG_Camera";
+
     private byte[] imgBytes;
     private int mWidth;
     private int mHeight;
