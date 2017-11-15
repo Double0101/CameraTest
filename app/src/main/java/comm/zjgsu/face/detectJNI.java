@@ -9,6 +9,11 @@
 package comm.zjgsu.face;
 
 public class detectJNI {
+
+  static {
+      System.loadLibrary("detect");
+  }
+
   public final static native long new_vectori__SWIG_0();
   public final static native long new_vectori__SWIG_1(long jarg1);
   public final static native long vectori_size(long jarg1, vectori jarg1_);
@@ -30,9 +35,9 @@ public class detectJNI {
   public final static native int npddetect_detect__SWIG_0(long jarg1, npddetect jarg1_, byte[] jarg2, int jarg3, int jarg4);
   public final static native int npddetect_detect__SWIG_1(long jarg1, npddetect jarg1_, long jarg2);
   public final static native int npddetect_detect__SWIG_2(long jarg1, npddetect jarg1_, String jarg2);
-  public final static native int npddetect_prescandetect__SWIG_0(long jarg1, npddetect jarg1_, String jarg2, int jarg3, int jarg4, double jarg5, double jarg6);
-  public final static native int npddetect_prescandetect__SWIG_1(long jarg1, npddetect jarg1_, String jarg2, int jarg3, int jarg4, double jarg5);
-  public final static native int npddetect_prescandetect__SWIG_2(long jarg1, npddetect jarg1_, String jarg2, int jarg3, int jarg4);
+  public final static native int npddetect_prescandetect__SWIG_0(long jarg1, npddetect jarg1_, byte[] jarg2, int jarg3, int jarg4, double jarg5, double jarg6);
+  public final static native int npddetect_prescandetect__SWIG_1(long jarg1, npddetect jarg1_, byte[] jarg2, int jarg3, int jarg4, double jarg5);
+  public final static native int npddetect_prescandetect__SWIG_2(long jarg1, npddetect jarg1_, byte[] jarg2, int jarg3, int jarg4);
   public final static native long npddetect_getXs(long jarg1, npddetect jarg1_);
   public final static native long npddetect_getYs(long jarg1, npddetect jarg1_);
   public final static native long npddetect_getSs(long jarg1, npddetect jarg1_);

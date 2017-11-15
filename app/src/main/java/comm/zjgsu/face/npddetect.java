@@ -71,15 +71,15 @@ public class npddetect {
     return detectJNI.npddetect_detect__SWIG_2(swigCPtr, this, imgPath);
   }
 
-  public int prescandetect(String I, int width, int height, double stepR, double thresR) {
+  public int prescandetect(byte[] I, int width, int height, double stepR, double thresR) {
     return detectJNI.npddetect_prescandetect__SWIG_0(swigCPtr, this, I, width, height, stepR, thresR);
   }
 
-  public int prescandetect(String I, int width, int height, double stepR) {
+  public int prescandetect(byte[] I, int width, int height, double stepR) {
     return detectJNI.npddetect_prescandetect__SWIG_1(swigCPtr, this, I, width, height, stepR);
   }
 
-  public int prescandetect(String I, int width, int height) {
+  public int prescandetect(byte[] I, int width, int height) {
     return detectJNI.npddetect_prescandetect__SWIG_2(swigCPtr, this, I, width, height);
   }
 
