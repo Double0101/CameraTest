@@ -28,9 +28,6 @@ public class PreviewHandler extends Handler implements ViewController{
     @Override
     public void handleMessage(final Message msg) {
         switch (msg.what) {
-            case UPDATE_DETECT:
-                DetectThread.detect((byte[]) msg.obj, 640, 480, this, mNpdDetect);
-                break;
             case UPDATE_VIEW:
                 mFaceView.setFaces((int[]) msg.obj);
             default:
@@ -45,6 +42,7 @@ public class PreviewHandler extends Handler implements ViewController{
         msg.what = UPDATE_DETECT;
         msg.obj = bytes;
         msg.sendToTarget();
+        DetectThread.detect((byte[]) msg.obj, 640, 480, this, mNpdDetect);
     }
 
     @Override
