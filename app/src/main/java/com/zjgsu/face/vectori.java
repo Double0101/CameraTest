@@ -6,7 +6,7 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-package comm.zjgsu.face;
+package com.zjgsu.face;
 
 public class vectori {
   private transient long swigCPtr;

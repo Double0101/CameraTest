@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import comm.zjgsu.face.npddetect;
-import comm.zjgsu.face.vectori;
+import com.zjgsu.face.npddetect;
+import com.zjgsu.face.vectori;
 
 /**
  * Created by Double on 09/11/2017.

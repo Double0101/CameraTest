@@ -6,14 +6,9 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-package comm.zjgsu.face;
+package com.zjgsu.face;
 
 public class detectJNI {
-
-  static {
-      System.loadLibrary("detect");
-  }
-
   public final static native long new_vectori__SWIG_0();
   public final static native long new_vectori__SWIG_1(long jarg1);
   public final static native long vectori_size(long jarg1, vectori jarg1_);
@@ -42,5 +37,6 @@ public class detectJNI {
   public final static native long npddetect_getYs(long jarg1, npddetect jarg1_);
   public final static native long npddetect_getSs(long jarg1, npddetect jarg1_);
   public final static native long npddetect_getScores(long jarg1, npddetect jarg1_);
-  public final static native void npddetect_draw(long jarg1, npddetect jarg1_, String jarg2);
+  public final static native void npddetect_draw__SWIG_0(long jarg1, npddetect jarg1_, String jarg2);
+  public final static native void npddetect_draw__SWIG_1(long jarg1, npddetect jarg1_, byte[] jarg2, int jarg3, int jarg4, String jarg5);
 }

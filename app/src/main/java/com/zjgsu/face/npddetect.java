@@ -6,7 +6,7 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-package comm.zjgsu.face;
+package com.zjgsu.face;
 
 public class npddetect {
   private transient long swigCPtr;
@@ -100,7 +100,11 @@ public class npddetect {
   }
 
   public void draw(String arg0) {
-    detectJNI.npddetect_draw(swigCPtr, this, arg0);
+    detectJNI.npddetect_draw__SWIG_0(swigCPtr, this, arg0);
+  }
+
+  public void draw(byte[] I, int w, int h, String saveName) {
+    detectJNI.npddetect_draw__SWIG_1(swigCPtr, this, I, w, h, saveName);
   }
 
 }
