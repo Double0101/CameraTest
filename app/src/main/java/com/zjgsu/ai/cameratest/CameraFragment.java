@@ -35,11 +35,13 @@ public class CameraFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mCameraSurface.openCamera();
+        mController.loadNpd();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mCameraSurface.cameraRelease();
+        mController.releaseNpd();
     }
 }

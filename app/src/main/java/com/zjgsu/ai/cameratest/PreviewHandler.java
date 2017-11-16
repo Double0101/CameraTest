@@ -16,15 +16,13 @@ public class PreviewHandler extends Handler implements ViewController{
 
     private FaceView mFaceView;
 
+    private Context mContext;
+
     private npddetect mNpdDetect;
 
     public PreviewHandler(Context context, FaceView faceView) {
         mFaceView = faceView;
-        RawResource mRawResource = new RawResource(context, R.raw.newmodel);
-        String modelPath = mRawResource.save("model_one.bin", false).getAbsolutePath();
-        Log.i(TAG, "PreviewHandler: " + modelPath);
-        mNpdDetect = new npddetect();
-        mNpdDetect.load(modelPath);
+        mContext = context;
     }
 
     @Override
@@ -55,5 +53,17 @@ public class PreviewHandler extends Handler implements ViewController{
         msg.what = UPDATE_VIEW;
         msg.obj = faces;
         msg.sendToTarget();
+    }
+
+    @Override
+    public void releaseNpd() {
+        mNpdDetect.delete();
+    }
+
+    @Override
+    public void loadNpd() {
+        RawResource rawResource = new RawResource(mContext, R.raw.newmodel);
+        mNpdDetect = new npddetect();
+        mNpdDetect.load(rawResource.save("model_one.bin", false).getAbsolutePath());
     }
 }

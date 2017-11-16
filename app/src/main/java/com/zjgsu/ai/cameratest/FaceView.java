@@ -53,10 +53,10 @@ public class FaceView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
         if (mFaces != null && mFaces.length % 3 == 0) {
             for (int i = 0; i < mFaces.length; i = i + 3) {
-                canvas.drawRect((int) (mFaces[i] * scaleX),
-                        (int) (mFaces[i + 1] * scaleY),
-                        (int) ((mFaces[i] + mFaces[i + 2]) * scaleX),
-                        (int) ((mFaces[i + 1] + mFaces[i + 2]) * scaleY),
+                canvas.drawRect((int) (mFaces[i]),
+                        (int) (mFaces[i + 1]),
+                        (int) ((mFaces[i] + mFaces[i + 2])),
+                        (int) ((mFaces[i + 1] + mFaces[i + 2])),
                         mPaint);
             }
         }

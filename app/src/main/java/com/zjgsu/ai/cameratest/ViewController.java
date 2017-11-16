@@ -10,4 +10,6 @@ public interface ViewController {
 
     void sendImage(byte[] bytes);
     void sendFaces(int[] faces);
+    void releaseNpd();
+    void loadNpd();
 }
