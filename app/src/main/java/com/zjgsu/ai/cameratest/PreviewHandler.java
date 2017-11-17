@@ -30,6 +30,7 @@ public class PreviewHandler extends Handler implements ViewController{
         switch (msg.what) {
             case UPDATE_VIEW:
                 mFaceView.setFaces((int[]) msg.obj);
+                break;
             default:
                 break;
         }
@@ -38,11 +39,7 @@ public class PreviewHandler extends Handler implements ViewController{
 
     @Override
     public void sendImage(byte[] bytes) {
-        Message msg = obtainMessage();
-        msg.what = UPDATE_DETECT;
-        msg.obj = bytes;
-        msg.sendToTarget();
-        DetectThread.detect((byte[]) msg.obj, 640, 480, this, mNpdDetect);
+        DetectThread.detect(bytes, 640, 480, this, mNpdDetect);
     }
 
     @Override

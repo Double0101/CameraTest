@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,11 +38,8 @@ public class FaceView extends SurfaceView {
         mPaint.setStrokeWidth(7f);
         mHolder.setFormat(PixelFormat.TRANSPARENT);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        scaleX = dm.widthPixels / 640;
-        scaleY = dm.heightPixels / 480;
-        Log.i(TAG, "FaceView: DisplayMetrics w" + dm.widthPixels + " h" + dm.heightPixels);
-        Log.i(TAG, "FaceView: scaleX = " + scaleX + " scaleY = " + scaleY);
+
+
     }
 
     public void setFaces(int[] faces) {
@@ -50,13 +48,22 @@ public class FaceView extends SurfaceView {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
+        scaleX = getWidth() / 640.0;
+        scaleY = getHeight() / 480.0;
+        Log.i(TAG, "FaceView: scaleX = " + scaleX + " scaleY = " + scaleY);
         if (mFaces != null && mFaces.length % 3 == 0) {
             for (int i = 0; i < mFaces.length; i = i + 3) {
-                canvas.drawRect((int) (mFaces[i]),
-                        (int) (mFaces[i + 1]),
-                        (int) ((mFaces[i] + mFaces[i + 2])),
-                        (int) ((mFaces[i + 1] + mFaces[i + 2])),
+                canvas.drawRect((int) (mFaces[i] * scaleX),
+                        (int) (mFaces[i + 1] * scaleY),
+                        (int) ((mFaces[i] + mFaces[i + 2]) * scaleX),
+                        (int) ((mFaces[i + 1] + mFaces[i + 2]) * scaleY),
                         mPaint);
             }
         }
