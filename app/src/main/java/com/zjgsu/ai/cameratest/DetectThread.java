@@ -1,7 +1,5 @@
 package com.zjgsu.ai.cameratest;
 
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.zjgsu.face.npddetect;
@@ -33,11 +31,12 @@ public class DetectThread extends Thread {
     @Override
     public void run() {
         super.run();
-        mNpdDetect.detect(imgBytes, mWidth, mHeight);
+        int n = mNpdDetect.detect(imgBytes, mWidth, mHeight);
         vectori x = mNpdDetect.getXs();
         vectori y = mNpdDetect.getYs();
         vectori s = mNpdDetect.getSs();
         int[] result = new int[(int) (3 * x.size())];
+        Log.i(TAG, "run: " + x.size() + "  " + n);
         for (int i = 0; i < x.size(); ++i) {
             result[i] = x.get(i);
             result[i + 1] = y.get(i);
@@ -53,6 +52,4 @@ public class DetectThread extends Thread {
             new DetectThread(controller, bytes, width, height, npd).start();
         }
     }
-
-//    public native int[] testDetect(byte[] bytes, int width, int height, String result);
 }
