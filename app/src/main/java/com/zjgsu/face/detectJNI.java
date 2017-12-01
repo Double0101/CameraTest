@@ -25,6 +25,17 @@ public class detectJNI {
   public final static native int vectori_get(long jarg1, vectori jarg1_, int jarg2);
   public final static native void vectori_set(long jarg1, vectori jarg1_, int jarg2, int jarg3);
   public final static native void delete_vectori(long jarg1);
+  public final static native long new_vectorf__SWIG_0();
+  public final static native long new_vectorf__SWIG_1(long jarg1);
+  public final static native long vectorf_size(long jarg1, vectorf jarg1_);
+  public final static native long vectorf_capacity(long jarg1, vectorf jarg1_);
+  public final static native void vectorf_reserve(long jarg1, vectorf jarg1_, long jarg2);
+  public final static native boolean vectorf_isEmpty(long jarg1, vectorf jarg1_);
+  public final static native void vectorf_clear(long jarg1, vectorf jarg1_);
+  public final static native void vectorf_add(long jarg1, vectorf jarg1_, float jarg2);
+  public final static native float vectorf_get(long jarg1, vectorf jarg1_, int jarg2);
+  public final static native void vectorf_set(long jarg1, vectorf jarg1_, int jarg2, float jarg3);
+  public final static native void delete_vectorf(long jarg1);
   public final static native long new_npddetect__SWIG_0();
   public final static native long new_npddetect__SWIG_1(int jarg1, int jarg2);
   public final static native void delete_npddetect(long jarg1);

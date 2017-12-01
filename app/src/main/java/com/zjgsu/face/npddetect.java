@@ -95,8 +95,8 @@ public class npddetect {
     return new vectori(detectJNI.npddetect_getSs(swigCPtr, this), false);
   }
 
-  public SWIGTYPE_p_std__vectorT_float_t getScores() {
-    return new SWIGTYPE_p_std__vectorT_float_t(detectJNI.npddetect_getScores(swigCPtr, this), false);
+  public vectorf getScores() {
+    return new vectorf(detectJNI.npddetect_getScores(swigCPtr, this), false);
   }
 
   public void draw(String arg0) {

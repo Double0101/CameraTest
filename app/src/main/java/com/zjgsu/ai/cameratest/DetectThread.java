@@ -3,6 +3,7 @@ package com.zjgsu.ai.cameratest;
 import android.util.Log;
 
 import com.zjgsu.face.npddetect;
+import com.zjgsu.face.vectorf;
 import com.zjgsu.face.vectori;
 
 /**
@@ -35,9 +36,14 @@ public class DetectThread extends Thread {
         vectori x = mNpdDetect.getXs();
         vectori y = mNpdDetect.getYs();
         vectori s = mNpdDetect.getSs();
+        vectorf f = mNpdDetect.getScores();
         int[] result = new int[(int) (3 * x.size())];
         Log.i(TAG, "run: " + x.size() + "  " + n);
         for (int i = 0; i < x.size(); ++i) {
+            if (f.get(i) < 10) {
+                result[i] = result[i + 1] = result[i + 2] = 0;
+                continue;
+            }
             result[i] = x.get(i);
             result[i + 1] = y.get(i);
             result[i + 2] = s.get(i);
