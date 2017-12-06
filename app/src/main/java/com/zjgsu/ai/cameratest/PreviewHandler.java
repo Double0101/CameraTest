@@ -58,6 +58,6 @@ public class PreviewHandler extends Handler implements ViewController{
     public void loadNpd() {
         RawResource rawResource = new RawResource(mContext, R.raw.newmodel);
         mNpdDetect = new npddetect();
-        mNpdDetect.load(rawResource.save("model_one.bin", false).getAbsolutePath());
+        mNpdDetect.load(rawResource.save("model_one.bin", true).getAbsolutePath());
     }
 }
