@@ -1,8 +1,11 @@
 package com.zjgsu.ai.cameratest;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +15,14 @@ import android.view.ViewGroup;
  */
 
 public class CameraFragment extends Fragment {
+    
+    private static final String TAG = "Double_Rotation";
 
     private FaceView mFaceView;
     private CameraSurface mCameraSurface;
 
     private ViewController mController;
+    private OrientationListener mOrientationListener;
 
     @Nullable
     @Override
@@ -25,7 +31,9 @@ public class CameraFragment extends Fragment {
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
 
-        mController = new PreviewHandler(getContext(), mFaceView);
+        mOrientationListener = new OrientationListener(getContext());
+        mController = new PreviewHandler(getContext(), mFaceView, mOrientationListener);
+
         mCameraSurface.setController(mController);
         return view;
     }
@@ -34,13 +42,19 @@ public class CameraFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mCameraSurface.openCamera();
-        mController.loadNpd();
+        mController.loadControl();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mCameraSurface.cameraRelease();
-        mController.releaseNpd();
+        mController.releaseControl();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mOrientationListener.disable();
     }
 }

@@ -15,13 +15,19 @@ public class PreviewHandler extends Handler implements ViewController{
 
     private FaceView mFaceView;
 
+    private OrientationListener mOrientationListener;
+
     private Context mContext;
 
     private npddetect mNpdDetect;
 
-    public PreviewHandler(Context context, FaceView faceView) {
+    private ImageInfo mImageInfo;
+
+    public PreviewHandler(Context context, FaceView faceView, OrientationListener orientationListener) {
         mFaceView = faceView;
         mContext = context;
+        mOrientationListener = orientationListener;
+        mImageInfo = new ImageInfo(640, 480);
     }
 
     @Override
@@ -38,7 +44,9 @@ public class PreviewHandler extends Handler implements ViewController{
 
     @Override
     public void sendImage(byte[] bytes) {
-        DetectThread.detect(bytes, 640, 480, this, mNpdDetect);
+        DetectThread.detect(mImageInfo.getDetectInfo(bytes,
+                mOrientationListener.getCurrentOrientation()),
+                this, mNpdDetect);
     }
 
     @Override
@@ -50,12 +58,14 @@ public class PreviewHandler extends Handler implements ViewController{
     }
 
     @Override
-    public void releaseNpd() {
+    public void releaseControl() {
+        mOrientationListener.disable();
         mNpdDetect.delete();
     }
 
     @Override
-    public void loadNpd() {
+    public void loadControl() {
+        mOrientationListener.enable();
         RawResource rawResource = new RawResource(mContext, R.raw.newmodel);
         mNpdDetect = new npddetect();
         mNpdDetect.load(rawResource.save("model_one.bin", true).getAbsolutePath());

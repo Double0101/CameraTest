@@ -14,25 +14,22 @@ public class DetectThread extends Thread {
 
     private final String TAG = "MSG_Camera";
 
-    private byte[] imgBytes;
-    private int mWidth;
-    private int mHeight;
+    private ImageInfo mImageInfo;
     private npddetect mNpdDetect;
     public static boolean execute = false;
     private ViewController mController;
 
-    public DetectThread(ViewController controller, byte[] bytes, int width, int height, npddetect npd) {
+    public DetectThread(ViewController controller, ImageInfo info, npddetect npd) {
         mController = controller;
-        imgBytes = bytes;
-        mWidth = width;
-        mHeight = height;
+        mImageInfo = info;
         mNpdDetect = npd;
     }
 
     @Override
     public void run() {
         super.run();
-        int n = mNpdDetect.detect(imgBytes, mWidth, mHeight);
+        Log.i(TAG, "run Orientation: " + mImageInfo.getOrientation());
+        int n = mNpdDetect.detect(mImageInfo.getData(), mImageInfo.getWidth(), mImageInfo.getHeight());
         vectori x = mNpdDetect.getXs();
         vectori y = mNpdDetect.getYs();
         vectori s = mNpdDetect.getSs();
@@ -52,10 +49,10 @@ public class DetectThread extends Thread {
         execute = false;
     }
 
-    public static void detect(byte[] bytes, int width, int height, ViewController controller, npddetect npd) {
+    public static void detect(ImageInfo info, ViewController controller, npddetect npd) {
         if (!execute) {
             execute = true;
-            new DetectThread(controller, bytes, width, height, npd).start();
+            new DetectThread(controller, info, npd).start();
         }
     }
 }
