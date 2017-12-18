@@ -19,15 +19,16 @@ import java.util.List;
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
     private static final String TAG = "CameraSurface";
+
+    private CameraPreview mCameraPreview;
+
     private SurfaceHolder mHolder;
     private ViewController mController;
-    private Camera mCamera;
-    private Camera.Parameters mParameters;
-    private int curCameraType;
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
-        curCameraType = Camera.CameraInfo.CAMERA_FACING_BACK;
+        mCameraPreview = new CameraPreview(640, 480);
+
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
@@ -38,13 +39,13 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        cameraPreview();
+        cameraPreview(surfaceHolder);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        cameraPreview();
-        mCamera.setPreviewCallback(this);
+        cameraPreview(surfaceHolder);
+        mCameraPreview.setPreviewCallback();
     }
 
     @Override
@@ -59,75 +60,24 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         mController.sendImage(bytes);
     }
 
-    public boolean openCamera() {
-        return openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+    public void openCamera() {
+        mCameraPreview.openCamera();
     }
 
-    public boolean openCamera(int cameraType) {
-        mCamera = Camera.open(cameraType);
-        if (mCamera == null) {
-            return false;
-        }
-        try {
-            curCameraType = cameraType;
-            mParameters = mCamera.getParameters();
-            List<String> focusModes = mParameters.getSupportedFocusModes();
-            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-                mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-            }
-            mParameters.setPreviewSize(640, 480);
-            mParameters.setPreviewFormat(ImageFormat.NV21);
-            mCamera.setParameters(mParameters);
-        } catch (Exception e) {
-            e.printStackTrace();
-            cameraRelease();
-            return false;
-        }
-
-        return true;
-    }
-
-    public void cameraPreview() {
-        if (mCamera == null) {
-            return;
-        }
-        try {
-            mCamera.setPreviewDisplay(mHolder);
-            mCamera.startPreview();
-        } catch (Exception e) {
-            cameraRelease();
-            e.printStackTrace();
-        }
+    public void cameraPreview(SurfaceHolder holder) {
+        mCameraPreview.cameraPreview(holder);
     }
 
     public void stopPreview() {
-        if (mCamera == null) {
-            return;
-        }
-        mCamera.stopPreview();
+        mCameraPreview.stopPreview();
     }
 
     public void cameraRelease() {
-        if (mCamera != null) {
-            mCamera.setPreviewCallback(null);
-            mCamera.release();
-            mCamera = null;
-        }
+        mCameraPreview.cameraRelease();
     }
 
     public void changeCamera() {
-        Log.i(TAG, "CAMERA BACK " + Camera.CameraInfo.CAMERA_FACING_BACK);
-        Log.i(TAG, "CAMERA FRONT " + Camera.CameraInfo.CAMERA_FACING_FRONT);
-        if (mCamera != null) {
-            stopPreview();
-            cameraRelease();
-            if (curCameraType == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                openCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-            } else {
-                openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
-            }
-            cameraPreview();
-        }
+        mCameraPreview.changeCamera(mHolder);
     }
 
 }

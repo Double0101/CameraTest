@@ -90,10 +90,18 @@ public class CameraPreview implements Camera.PreviewCallback {
 
     public void cameraRelease() {
         if (mCamera != null) {
-            mCamera.setPreviewCallback(null);
+            setPreviewCallback(null);
             mCamera.release();
             mCamera = null;
         }
+    }
+
+    public void setPreviewCallback() {
+        mCamera.setPreviewCallback(this);
+    }
+
+    public void setPreviewCallback(Camera.PreviewCallback previewCallback) {
+        mCamera.setPreviewCallback(previewCallback);
     }
 
     @Override
