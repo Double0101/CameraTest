@@ -71,7 +71,8 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         try {
             curCameraType = cameraType;
             mParameters = mCamera.getParameters();
-            if (curCameraType == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            List<String> focusModes = mParameters.getSupportedFocusModes();
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                 mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             }
             mParameters.setPreviewSize(640, 480);
