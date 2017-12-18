@@ -1,6 +1,7 @@
 package com.zjgsu.ai.cameratest;
 
 import android.content.Context;
+import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
@@ -15,7 +16,7 @@ public class PreviewHandler extends Handler implements ViewController{
 
     private FaceView mFaceView;
 
-    private OrientationListener mOrientationListener;
+    private RotationSensor mSensor;
 
     private Context mContext;
 
@@ -23,10 +24,10 @@ public class PreviewHandler extends Handler implements ViewController{
 
     private ImageInfo mImageInfo;
 
-    public PreviewHandler(Context context, FaceView faceView, OrientationListener orientationListener) {
+    public PreviewHandler(Context context, FaceView faceView, RotationSensor sensor) {
         mFaceView = faceView;
         mContext = context;
-        mOrientationListener = orientationListener;
+        mSensor = sensor;
         mImageInfo = new ImageInfo(640, 480);
     }
 
@@ -43,9 +44,14 @@ public class PreviewHandler extends Handler implements ViewController{
     }
 
     @Override
+    public void setImageSize(Camera.Parameters parameters) {
+        mImageInfo.setSize(parameters);
+    }
+
+    @Override
     public void sendImage(byte[] bytes) {
         DetectThread.detect(mImageInfo.getDetectInfo(bytes,
-                mOrientationListener.getCurrentOrientation()),
+                mSensor.getRotation()),
                 this, mNpdDetect);
     }
 
@@ -59,13 +65,13 @@ public class PreviewHandler extends Handler implements ViewController{
 
     @Override
     public void releaseControl() {
-        mOrientationListener.disable();
+        mSensor.unregisterSensor();
         mNpdDetect.delete();
     }
 
     @Override
     public void loadControl() {
-        mOrientationListener.enable();
+        mSensor.registerSensor();
         RawResource rawResource = new RawResource(mContext, R.raw.newmodel);
         mNpdDetect = new npddetect();
         mNpdDetect.load(rawResource.save("model_one.bin", true).getAbsolutePath());

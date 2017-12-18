@@ -1,5 +1,7 @@
 package com.zjgsu.ai.cameratest;
 
+import android.hardware.Camera;
+
 /**
  * Created by Double on 07/12/2017.
  */
@@ -36,5 +38,10 @@ public class ImageInfo {
 
     public int getWidth() {
         return mWidth;
+    }
+
+    public void setSize(Camera.Parameters parameters) {
+        mWidth = parameters.getPreviewSize().width;
+        mHeight = parameters.getPreviewSize().height;
     }
 }

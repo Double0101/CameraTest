@@ -6,8 +6,11 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.List;
 
 /**
  * Created by Double on 25/09/2017.
@@ -15,14 +18,16 @@ import android.view.SurfaceView;
 
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
+    private static final String TAG = "CameraSurface";
     private SurfaceHolder mHolder;
     private ViewController mController;
     private Camera mCamera;
     private Camera.Parameters mParameters;
+    private int curCameraType;
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        curCameraType = Camera.CameraInfo.CAMERA_FACING_BACK;
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
@@ -55,13 +60,20 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public boolean openCamera() {
-        mCamera = Camera.open();
+        return openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+    }
+
+    public boolean openCamera(int cameraType) {
+        mCamera = Camera.open(cameraType);
         if (mCamera == null) {
             return false;
         }
         try {
+            curCameraType = cameraType;
             mParameters = mCamera.getParameters();
-            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            if (curCameraType == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            }
             mParameters.setPreviewSize(640, 480);
             mParameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(mParameters);
@@ -99,6 +111,21 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewCallback(null);
             mCamera.release();
             mCamera = null;
+        }
+    }
+
+    public void changeCamera() {
+        Log.i(TAG, "CAMERA BACK " + Camera.CameraInfo.CAMERA_FACING_BACK);
+        Log.i(TAG, "CAMERA FRONT " + Camera.CameraInfo.CAMERA_FACING_FRONT);
+        if (mCamera != null) {
+            stopPreview();
+            cameraRelease();
+            if (curCameraType == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                openCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            } else {
+                openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+            }
+            cameraPreview();
         }
     }
 

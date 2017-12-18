@@ -9,32 +9,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 /**
  * Created by Double on 25/09/2017.
  */
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends Fragment implements View.OnClickListener{
     
     private static final String TAG = "Double_Rotation";
 
     private FaceView mFaceView;
     private CameraSurface mCameraSurface;
+    private ImageButton mBtnChangeCamera;
 
     private ViewController mController;
-    private OrientationListener mOrientationListener;
+    private RotationSensor mSensor;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_layout, container, false);
+
         mCameraSurface = (CameraSurface) view.findViewById(R.id.camera_surface);
         mFaceView = (FaceView) view.findViewById(R.id.faces_view);
+        mBtnChangeCamera = (ImageButton) view.findViewById(R.id.img_btn);
 
-        mOrientationListener = new OrientationListener(getContext());
-        mController = new PreviewHandler(getContext(), mFaceView, mOrientationListener);
+        mSensor = new RotationSensor(getContext());
+        mController = new PreviewHandler(getContext(), mFaceView, mSensor);
 
         mCameraSurface.setController(mController);
+        mBtnChangeCamera.setOnClickListener(this);
         return view;
     }
 
@@ -55,6 +60,12 @@ public class CameraFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mOrientationListener.disable();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.img_btn) {
+            mCameraSurface.changeCamera();
+        }
     }
 }
