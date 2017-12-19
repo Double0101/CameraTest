@@ -68,6 +68,7 @@ public class CameraPreview implements Camera.PreviewCallback {
             openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
         }
         cameraPreview(holder);
+        setPreviewCallback();
     }
 
     public void cameraPreview(SurfaceHolder holder) {
