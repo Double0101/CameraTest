@@ -14,8 +14,8 @@ public class ImageInfo {
     private int mOrientation;
 
     public ImageInfo(int width, int height) {
-        mWidth = width;
         mHeight = height;
+        mWidth = width;
     }
 
     public ImageInfo getDetectInfo(byte[] bytes, int orientation) {
@@ -40,8 +40,7 @@ public class ImageInfo {
         return mWidth;
     }
 
-    public void setSize(Camera.Parameters parameters) {
-        mWidth = parameters.getPreviewSize().width;
-        mHeight = parameters.getPreviewSize().height;
+    public static ImageInfo getIntance(int width, int height) {
+        return new ImageInfo(width, height);
     }
 }

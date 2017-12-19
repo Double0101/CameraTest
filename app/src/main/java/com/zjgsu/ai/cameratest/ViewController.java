@@ -12,7 +12,7 @@ public interface ViewController {
 
     void sendImage(byte[] bytes);
     void sendFaces(int[] faces);
-    void setImageSize(Camera.Parameters parameters);
+    void setImageSize(int width, int height);
     void releaseControl();
     void loadControl();
 }

@@ -1,7 +1,6 @@
 package com.zjgsu.ai.cameratest;
 
 import android.content.Context;
-import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
@@ -28,7 +27,6 @@ public class PreviewHandler extends Handler implements ViewController{
         mFaceView = faceView;
         mContext = context;
         mSensor = sensor;
-        mImageInfo = new ImageInfo(640, 480);
     }
 
     @Override
@@ -44,8 +42,8 @@ public class PreviewHandler extends Handler implements ViewController{
     }
 
     @Override
-    public void setImageSize(Camera.Parameters parameters) {
-        mImageInfo.setSize(parameters);
+    public void setImageSize(int width, int height) {
+        mImageInfo = ImageInfo.getIntance(width, height);
     }
 
     @Override

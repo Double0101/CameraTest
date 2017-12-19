@@ -14,12 +14,14 @@ import java.util.List;
 public class CameraPreview implements Camera.PreviewCallback {
 
     private Camera mCamera;
-    private ImageInfo mInfo;
+    private ViewController mViewController;
 
     private int cCameraType;
+    private int mWidth, mHeight;
 
     public CameraPreview(int width, int height) {
-        mInfo = new ImageInfo(width, height);
+        mWidth = width;
+        mHeight = height;
     }
 
     public boolean openCamera() {
@@ -33,7 +35,7 @@ public class CameraPreview implements Camera.PreviewCallback {
             if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             }
-            parameters.setPreviewSize(mInfo.getWidth(), mInfo.getHeight());
+            parameters.setPreviewSize(mWidth, mHeight);
             parameters.setPreviewFormat(ImageFormat.NV21);
             mCamera.setParameters(parameters);
             cCameraType = cameraType;
@@ -96,6 +98,11 @@ public class CameraPreview implements Camera.PreviewCallback {
         }
     }
 
+    public void setController(ViewController controller) {
+        mViewController = controller;
+        mViewController.setImageSize(mWidth, mHeight);
+    }
+
     public void setPreviewCallback() {
         mCamera.setPreviewCallback(this);
     }
@@ -106,6 +113,7 @@ public class CameraPreview implements Camera.PreviewCallback {
 
     @Override
     public void onPreviewFrame(byte[] bytes, Camera camera) {
-
+        if (bytes == null) return;
+        mViewController.sendImage(bytes);
     }
 }

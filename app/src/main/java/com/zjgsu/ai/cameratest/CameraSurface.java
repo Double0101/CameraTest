@@ -1,12 +1,7 @@
 package com.zjgsu.ai.cameratest;
 
 import android.content.Context;
-import android.graphics.ImageFormat;
-import android.hardware.Camera;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,14 +11,13 @@ import java.util.List;
  * Created by Double on 25/09/2017.
  */
 
-public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
+public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "CameraSurface";
 
     private CameraPreview mCameraPreview;
 
     private SurfaceHolder mHolder;
-    private ViewController mController;
 
     public CameraSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +28,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void setController(ViewController controller) {
-        mController = controller;
+        mCameraPreview.setController(controller);
     }
 
     @Override
@@ -51,13 +45,6 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         stopPreview();
-    }
-
-    @Override
-    public void onPreviewFrame(byte[] bytes, Camera camera) {
-        if (bytes == null) return;
-
-        mController.sendImage(bytes);
     }
 
     public void openCamera() {
